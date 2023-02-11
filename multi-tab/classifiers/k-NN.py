@@ -24,8 +24,8 @@ def showScatter(train_data, train_color, test_data, test_color, title, score, i)
     plt.subplot(1, 2, i)
     finalTitle = title + "\nAccuracy = " + str(score)
     plt.title(finalTitle)
-    plt.scatter(train_data[:, 0], train_data[:, 1], c=train_color, marker='o')
-    plt.scatter(test_data[:, 0], test_data[:, 1], c=test_color, marker='v')
+    plt.scatter(train_data[:, 0], train_data[:, 1], c=train_color, marker='o', label='training data')
+    plt.scatter(test_data[:, 0], test_data[:, 1], c=test_color, marker='v', label='testing data')
     plt.legend()
 
 
@@ -67,7 +67,7 @@ def test_knn():
     score = kNN(k).build(train_data, 
                          train_label).score(test_data, test_label)
     y_predict = kNN(k).build(train_data, train_label).predict(test_data)
-    
+
     # Plot
     showScatter(train_tsne, train_label, 
                 test_tsne, test_label, 
