@@ -9,6 +9,7 @@ from scipy import stats
 import sklearn.datasets as dt
 from sklearn import manifold
 from utility import dataset_loading
+import datetime
 
 
 ###############################################
@@ -29,6 +30,7 @@ def getU0seq(original_seq):
 
 # Process all the traffics into U0 sequence
 def getU0seq_dataset(original_dataset):
+    start = datetime.datetime.now()
     print("=========Start getting U0 sequences=========")
     result_dataset = []
     for i in original_dataset:
@@ -38,6 +40,8 @@ def getU0seq_dataset(original_dataset):
         print("U0 sequence get successfully !")
     except:
         print("Error in U0 seq getting !")
+    end = datetime.datetime.now()
+    print('total time: ', (end - start).seconds, "s")
     return result_dataset
 
 
@@ -87,6 +91,7 @@ def feature_extractor_B(U0_seq):
 
 
 def feature_extractor_B_dataset(U0_seqs):
+    start = datetime.datetime.now()
     print("============Start getting blocks============")
     result = []
     for i in U0_seqs:
@@ -97,6 +102,8 @@ def feature_extractor_B_dataset(U0_seqs):
         print("Blocks getting successfully !")
     except:
         print("Error in getting blocks !")
+    end = datetime.datetime.now()
+    print('total time: ', (end - start).seconds, "s")
     return result
 
 
@@ -109,13 +116,14 @@ def feature_extractor_B_dataset(U0_seqs):
 ###############################################
 # Result: 0 for b, 1 for d
 def feature_extractor_bd(U0_seqs):
+    start = datetime.datetime.now()
     print("=============Start getting b and d=============")
     sum_b = 0
     sum_d = 0
     for i in range(0, len(U0_seqs)):
         block = feature_extractor_B(U0_seqs[i])
-        sum_b += block[0][0]
-        sum_d += block[-1][1]
+        sum_b += block[0]
+        sum_d += block[-2]
     b = int(sum_b / len(U0_seqs))
     d = int(sum_d / len(U0_seqs))
     try:
@@ -123,6 +131,8 @@ def feature_extractor_bd(U0_seqs):
         print("d=", d)
     except:
         print("Fail to get b and d !")
+    end = datetime.datetime.now()
+    print('total time: ', (end - start).seconds, "s")
     return [b, d]
 
 
@@ -133,6 +143,7 @@ def feature_extractor_SF_rare(U0_seq, b, d):
 
 
 def feature_extractor_SF(U0_seqs, b, d):
+    start = datetime.datetime.now()
     print("=============Start getting SF==============")
     result = []
     for i in U0_seqs:
@@ -143,6 +154,8 @@ def feature_extractor_SF(U0_seqs, b, d):
         print("Get SF successfully !")
     except:
         print("Error in getting SF !")
+    end = datetime.datetime.now()
+    print('total time: ', (end - start).seconds, "s")
     return result
 
 
@@ -187,6 +200,7 @@ class randomForest():
 
 # Original_seqs: [original_seq[0], original_seq[1], ......]
 def feature_extractor_ST(original_seqs, webpages):
+    start = datetime.datetime.now()
     print("===============Start getting ST==============")
     final_seqs = []
     for seq in original_seqs:
@@ -199,6 +213,8 @@ def feature_extractor_ST(original_seqs, webpages):
         print("Get ST successfully !")
     except:
         print("Error in getting ST !")
+    end = datetime.datetime.now()
+    print('total time: ', (end - start).seconds, "s")
     return final_seqs
 
 
@@ -212,6 +228,7 @@ def feature_extractor_ST(original_seqs, webpages):
 # ]
 ###############################################
 def dataset_preprocess(X_data, webpages):
+    start = datetime.datetime.now()
     print(">>>>>>>>>>>>>>>>>Start data processing<<<<<<<<<<<<<<<<<<<")
     U0_dataset = getU0seq_dataset(X_data)               # U0 dataset
     block_dataset = feature_extractor_B_dataset(U0_dataset)
@@ -223,13 +240,14 @@ def dataset_preprocess(X_data, webpages):
         block = block_dataset[i]
         sf = sf_dataset[i]
         st = st_dataset[i]
-        feature_vector = np.concatenate((block, sf, st))
+        feature_vector = np.concatenate((block, sf, st)).tolist()
         final_dataset.append(feature_vector)
-    final_dataset = np.array(final_dataset)
     try:
         print("Feature extracted successfully !")
     except:
         print("Error in feature extracting !")
+    end = datetime.datetime.now()
+    print('total time: ', (end - start).seconds, "s")
     return final_dataset
 
 
@@ -240,13 +258,18 @@ def dataset_preprocess(X_data, webpages):
 
 # Test module
 if __name__ == '__main__':
+    start = datetime.datetime.now()
     X_train, y_train = dataset_loading()
     dataset = dataset_preprocess(X_train, y_train)
-    #print(dataset)
-    model = KNeighborsClassifier(n_neighbors=5)
-    model.fit(dataset, y_train)
-    result = model.score(dataset)
-    print("Accuracy = ", result)
+    try:
+        model = KNeighborsClassifier(n_neighbors=5)
+        model.fit(dataset, y_train)
+        result = model.score(dataset, y_train)
+        print("Accuracy = ", result)
+    except:
+        print("Sorry ! Error !")
+    end = datetime.datetime.now()
+    print('total time: ', (end - start).seconds, "s")
 
     
     
