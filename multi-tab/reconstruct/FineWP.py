@@ -80,13 +80,9 @@ def feature_extractor_B(U0_seq):
     
     # Get blocks
     B = []
-    sum = 0
     for i in A_dict.keys():
-        if sum > 4:
-            break
         B_list = [S_dict[i], E_dict[i], i]
         B += B_list
-        sum += 1
     return B
 
 
@@ -97,13 +93,14 @@ def feature_extractor_B_dataset(U0_seqs):
     for i in U0_seqs:
         temp = feature_extractor_B(i)
         result.append(temp)
-    result = np.array(result)
+    result = np.array(result, dtype=object)
     try:
         print("Blocks getting successfully !")
     except:
         print("Error in getting blocks !")
     end = datetime.datetime.now()
     print('total time: ', (end - start).seconds, "s")
+    print("==============================================")
     return result
 
 
@@ -156,6 +153,7 @@ def feature_extractor_SF(U0_seqs, b, d):
         print("Error in getting SF !")
     end = datetime.datetime.now()
     print('total time: ', (end - start).seconds, "s")
+    print("==============================================")
     return result
 
 
@@ -179,6 +177,7 @@ def feature_extractor_ST_rare(original_seq):
 
 
 # Random forest, reserve the features contributing the most
+# Get the index of features
 class randomForest():
     def __init__(self) -> None:
         pass
@@ -195,8 +194,10 @@ class randomForest():
         importance = self.importance
         threshold = 0.04
         dataset = np.array(dataset)
+        X_select_index = np.where(importance > threshold)
         X_select = dataset[:, importance > threshold]
-        return X_select
+        dataset = np.array(dataset)
+        return X_select_index, X_select
 
 # Original_seqs: [original_seq[0], original_seq[1], ......]
 def feature_extractor_ST(original_seqs, webpages):
@@ -208,14 +209,15 @@ def feature_extractor_ST(original_seqs, webpages):
         final_seqs.append(temp)
     rf = randomForest()
     rf.build(final_seqs, webpages)
-    final_seqs = rf.select_feature(final_seqs)
+    index_array, st_data = rf.select_feature(final_seqs)
     try:
         print("Get ST successfully !")
     except:
         print("Error in getting ST !")
     end = datetime.datetime.now()
     print('total time: ', (end - start).seconds, "s")
-    return final_seqs
+    print("==============================================")
+    return index_array, st_data
 
 
 ###############################################
@@ -227,28 +229,69 @@ def feature_extractor_ST(original_seqs, webpages):
 # ......
 # ]
 ###############################################
-def dataset_preprocess(X_data, webpages):
-    start = datetime.datetime.now()
-    print(">>>>>>>>>>>>>>>>>Start data processing<<<<<<<<<<<<<<<<<<<")
-    U0_dataset = getU0seq_dataset(X_data)               # U0 dataset
-    block_dataset = feature_extractor_B_dataset(U0_dataset)
-    dataset_bd = feature_extractor_bd(U0_dataset)
+def preprocess_B_SF(X_data):
+    # U0 dataset and blocks
+    U0_dataset = getU0seq_dataset(X_data)                                      
+    block_dataset = feature_extractor_B_dataset(U0_dataset)                     
+
+    # SF Feature
+    dataset_bd = feature_extractor_bd(U0_dataset)                               
     sf_dataset = feature_extractor_SF(U0_dataset, dataset_bd[0], dataset_bd[1])
-    st_dataset = feature_extractor_ST(X_data, webpages)
-    final_dataset = []
-    for i in range(0, len(X_data)):
+    return block_dataset, sf_dataset
+
+def dataset_preprocess(X_data, webpages, X_test):
+    start = datetime.datetime.now()
+    print("Start data processing !<<<<<<<<<<<<<<<<<<<")
+
+    ## Dataset preprocessing
+    block_dataset, sf_dataset = preprocess_B_SF(X_data)
+
+    # ST Feature
+    st_index, st_dataset = feature_extractor_ST(X_data, webpages)
+
+    # Join all the features together
+    print("Start joint the feature vector of dataset===========")
+    block = block_dataset[0]
+    sf = sf_dataset[0]
+    st = st_dataset[0]
+    feature_vector = np.concatenate((sf, st))
+    final_dataset = feature_vector
+    for i in range(1, len(X_data)):
         block = block_dataset[i]
         sf = sf_dataset[i]
         st = st_dataset[i]
-        feature_vector = np.concatenate((block, sf, st)).tolist()
-        final_dataset.append(feature_vector)
+        feature_vector = np.concatenate((sf, st))
+        final_dataset = np.row_stack((final_dataset, feature_vector))
+    print("-----------------------------------------")
+
+    ## Preprocess testing data
+    print("Start to join the feature vector of testset===========")
+    block_test, sf_test = preprocess_B_SF(X_test)
+    final_seqs = []
+    for seq in X_test:
+        temp = feature_extractor_ST_rare(seq)
+        final_seqs.append(temp)
+    st_test = final_seqs[:, st_index]
+    block = block_test[0]
+    sf = sf_test[0]
+    st = st_test[0]
+    feature_vector = np.concatenate((sf, st))
+    final_test = feature_vector
+    for i in range(1, len(X_test)):
+        block = block_test[i]
+        sf = sf_test[i]
+        feature_vector = np.concatenate((sf, st))
+        final_test = np.row_stack((final_test, feature_vector))
+    
+    # Robust ensurance
     try:
-        print("Feature extracted successfully !")
+        print("Data processed successfully !")
     except:
-        print("Error in feature extracting !")
+        print("Error!")
+
     end = datetime.datetime.now()
     print('total time: ', (end - start).seconds, "s")
-    return final_dataset
+    return final_dataset, final_test
 
 
 
@@ -258,18 +301,20 @@ def dataset_preprocess(X_data, webpages):
 
 # Test module
 if __name__ == '__main__':
+    '''
     start = datetime.datetime.now()
-    X_train, y_train = dataset_loading()
-    dataset = dataset_preprocess(X_train, y_train)
-    try:
-        model = KNeighborsClassifier(n_neighbors=5)
-        model.fit(dataset, y_train)
-        result = model.score(dataset, y_train)
-        print("Accuracy = ", result)
-    except:
-        print("Sorry ! Error !")
+    X_train, y_train, X_test, y_test = dataset_loading()
+    dataset, testset = dataset_preprocess(X_train, y_train, X_test)
+    print("Dataset print finished ! >>>>>>>>>>>>>>>>>>>>>>>>>")
+    model = KNeighborsClassifier(n_neighbors=5)
+    model.fit(dataset, y_train)
+    result = model.score(testset, y_test)
+    print("Accuracy = ", result)
     end = datetime.datetime.now()
     print('total time: ', (end - start).seconds, "s")
-
-    
-    
+    '''
+    array = np.array([[-1, 1, 1, 1, 1, 1, 1, 1],
+                     [-1, 1, 1, 1, 1, 1, 1, 1]]
+                    )
+    label = np.array([1, 1])
+    dataset, testset = dataset_preprocess(array, label, array)
