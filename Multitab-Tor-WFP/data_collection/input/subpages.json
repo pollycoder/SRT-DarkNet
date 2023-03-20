@@ -1,0 +1,502 @@
+{
+    "google.com": {
+        "0": "https://www.google.com/",
+        "1": "https://www.google.com/search?q=test",
+        "2": "https://www.google.com/search?q=web"
+    },
+    "youtube.com": {
+        "0": "https://www.youtube.com",
+        "1": "https://www.youtube.com/results?search_query=test",
+        "2": "https://www.youtube.com/results?search_query=web"
+    },
+    "facebook.com": {
+        "0": "https://www.facebook.com/login/identify/",
+        "1": "https://www.facebook.com/",
+        "2": "https://www.facebook.com/login"
+    },
+    "wikipedia.org": {
+        "0": "https://wikipedia.org/wiki/1",
+        "1": "https://wikipedia.org/wiki/2",
+        "2": "https://wikipedia.org/wiki/3"
+    },
+    "yahoo.com": {
+        "0": "https://search.yahoo.com/search?p=test",
+        "1": "https://search.yahoo.com/search?p=web",
+        "2": "https://search.yahoo.com/search?p=1"
+    },
+    "amazon.com": {
+        "0": "https://www.amazon.com/s?k=1",
+        "1": "https://www.amazon.com/s?k=test",
+        "2": "https://www.amazon.com/s?k=web"
+    },
+    "live.com": {
+        "0": "https://outlook.live.com/",
+        "1": "https://outlook.live.com/",
+        "2": "https://outlook.live.com/"
+    },
+    "vk.com": {
+        "0": "https://vk.com",
+        "1": "https://vk.com",
+        "2": "https://vk.com"
+    },
+    "twitter.com": {
+        "0": "https://twitter.com/search?q=web",
+        "1": "https://twitter.com/search?q=1",
+        "2": "https://twitter.com/search?q=test"
+    },
+    "instagram.com": {
+        "0": "https://www.instagram.com",
+        "1": "https://www.instagram.com/",
+        "2": "https://www.instagram.com/"
+    },
+    "reddit.com": {
+        "0": "https://www.reddit.com/search/?q=web",
+        "1": "https://www.reddit.com/search/?q=1",
+        "2": "https://www.reddit.com/search/?q=test"
+    },
+    "linkedin.com": {
+        "0": "https://www.linkedin.com",
+        "1": "https://www.linkedin.com",
+        "2": "https://www.linkedin.com"
+    },
+    "jd.com": {
+        "0": "https://phat.jd.com/10-184.html",
+        "1": "https://phat.jd.com/10-185.html",
+        "2": "https://phat.jd.com/10-183.html"
+    },
+    "hao123.com": {
+        "0": "https://www.hao123.com",
+        "1": "https://www.hao123.com",
+        "2": "https://www.hao123.com"
+    },
+    "yandex.ru": {
+        "0": "https://yandex.ru/search/?text=1",
+        "1": "https://yandex.ru/search/?text=2",
+        "2": "https://yandex.ru/search/?text=3"
+    },
+    "ebay.com": {
+        "0": "https://www.ebay.com/sch/i.html?&_nkw=web",
+        "1": "https://www.ebay.com/sch/i.html?&_nkw=test",
+        "2": "https://www.ebay.com/sch/i.html?&_nkw=phone"
+    },
+    "ntd.tv": {
+        "0": "https://www.ntd.com/tv-providers.html#UK",
+        "1": "https://www.ntd.com/tv-providers.html#USA",
+        "2": "https://www.ntd.com/tv-providers.html#antenna-tv"
+    },
+    "msn.com": {
+        "0": "https://www.msn.com",
+        "1": "https://www.msn.com",
+        "2": "https://www.msn.com"
+    },
+    "wordpress.com": {
+        "0": "https://wordpress.com/hosting/",
+        "1": "https://wordpress.com/website-builder/",
+        "2": "https://wordpress.com/"
+    },
+    "sogou.com": {
+        "0": "https://www.sogou.com/tx?query=web",
+        "1": "https://www.sogou.com/tx?query=text",
+        "2": "https://www.sogou.com/tx?query=1"
+    },
+    "bing.com": {
+        "0": "https://cn.bing.com/search?q=1",
+        "1": "https://cn.bing.com/search?q=test",
+        "2": "https://cn.bing.com/search?q=web"
+    },
+    "sohu.com": {
+        "0": "https://search.sohu.com/?keyword=test",
+        "1": "https://search.sohu.com/?keyword=web",
+        "2": "https://search.sohu.com/?keyword=phone"
+    },
+    "ok.ru": {
+        "0": "https://ok.ru/",
+        "1": "https://ok.ru/",
+        "2": "https://ok.ru/"
+    },
+    "aliexpress.com": {
+        "0": "https://www.aliexpress.com/wholesale?SearchText=phone",
+        "1": "https://www.aliexpress.com/wholesale?SearchText=shoe",
+        "2": "https://www.aliexpress.com/wholesale?SearchText=pant"
+    },
+    "microsoft.com": {
+        "0": "https://support.microsoft.com",
+        "1": "https://www.microsoft.com",
+        "2": "https://www.microsoft.com/windows"
+    },
+    "tumblr.com": {
+        "0": "https://www.tumblr.com/explore/trending",
+        "1": "https://www.tumblr.com",
+        "2": "https://www.tumblr.com/explore/staff-picks"
+    },
+    "pornhub.com": {
+        "0": "https://pornhub.com/video/search?search=china",
+        "1": "https://pornhub.com/video/search?search=japan",
+        "2": "https://pornhub.com/video/search?search=america"
+    },
+    "livejasmin.com": {
+        "0": "https://www.livejasmin.com",
+        "1": "https://www.livejasmin.com",
+        "2": "https://www.livejasmin.com"
+    },
+    "stackoverflow.com": {
+        "0": "https://stackoverflow.com/search?q=web",
+        "1": "https://stackoverflow.com/search?q=ai",
+        "2": "https://stackoverflow.com/search?q=test"
+    },
+    "imgur.com": {
+        "0": "https://imgur.com/search?q=test",
+        "1": "https://imgur.com/search?q=web",
+        "2": "https://imgur.com/search?q=phone"
+    },
+    "imdb.com": {
+        "0": "https://www.imdb.com/find?q=robot",
+        "1": "https://www.imdb.com/find?q=ai",
+        "2": "https://www.imdb.com/find?q=man"
+    },
+    "zoom.us": {
+        "0": "https://blog.zoom.us/?s=test",
+        "1": "https://blog.zoom.us/?s=web",
+        "2": "https://blog.zoom.us/?s=ai"
+    },
+    "popads.net": {
+        "0": "https://www.popads.net/faq.html",
+        "1": "https://www.popads.net/publishers.html",
+        "2": "https://www.popads.net/advertisers.html"
+    },
+    "diply.com": {
+        "0": "https://diply.com/category/pop-culture",
+        "1": "https://diply.com/category/lifestyle",
+        "2": "https://diply.com/category/family"
+    },
+    "apple.com": {
+        "0": "https://www.apple.com/mac/",
+        "1": "https://www.apple.com/ipad/",
+        "2": "https://www.apple.com/iphone/"
+    },
+    "mail.ru": {
+        "0": "https://news.mail.ru/politics/52603925",
+        "1": "https://news.mail.ru/politics/52601463",
+        "2": "https://news.mail.ru/politics/52604207"
+    },
+    "kompas.com": {
+        "0": "https://www.kompas.com/",
+        "1": "https://news.kompas.com/",
+        "2": "https://health.kompas.com/"
+    },
+    "github.com": {
+        "0": "https://github.com/topics",
+        "1": "https://github.com/collections",
+        "2": "https://github.com/events"
+    },
+    "txxx.com": {
+        "0": "https://txxx.com/search/?s=china",
+        "1": "https://txxx.com/search/?s=japan",
+        "2": "https://txxx.com/search/?s=america"
+    },
+    "twitch.tv": {
+        "0": "https://www.twitch.tv/directory/gaming",
+        "1": "https://www.twitch.tv/directory/irl",
+        "2": "https://www.twitch.tv/directory/music"
+    },
+    "pinterest.com": {
+        "0": "https://newsroom.pinterest.com/en/news",
+        "1": "https://newsroom.pinterest.com/en/pinsights",
+        "2": "https://newsroom.pinterest.com/en/company"
+    },
+    "naver.com": {
+        "0": "https://kin.naver.com/qna/questionList.naver",
+        "1": "https://kin.naver.com/volunteer/index.naver",
+        "2": "https://kin.naver.com/best/listaha.naver"
+    },
+    "wikia.com": {
+        "0": "https://www.fandom.com/topics/games",
+        "1": "https://www.fandom.com/topics/anime",
+        "2": "https://www.fandom.com/topics/movies"
+    },
+    "adobe.com": {
+        "0": "https://helpx.adobe.com/lightroom-cc/using/whats-new.html",
+        "1": "https://helpx.adobe.com/lightroom-cc/system-requirements.html",
+        "2": "https://helpx.adobe.com/lightroom-cc/faq.html"
+    },
+    "coccoc.com": {
+        "0": "https://coccoc.com/desktop",
+        "1": "https://coccoc.com/mobile",
+        "2": "https://coccoc.com/about-us"
+    },
+    "so.com": {
+        "0": "https://www.so.com/s?q=ai",
+        "1": "https://www.so.com/s?q=web",
+        "2": "https://www.so.com/s?q=test"
+    },
+    "xhopen.com": {
+        "0": "http://xhopen.com",
+        "1": "http://xhopen.com",
+        "2": "http://xhopen.com"
+    },
+    "dropbox.com": {
+        "0": "https://experience.dropbox.com/zh-cn/work-with-flexibility",
+        "1": "https://experience.dropbox.com/zh-cn/get-organized",
+        "2": "https://experience.dropbox.com/zh-cn/keep-work-secure"
+    },
+    "bongacams.com": {
+        "0": "https://bongacams.com/",
+        "1": "https://bongacams.com/",
+        "2": "https://bongacams.com/"
+    },
+    "fc2.com": {
+        "0": "https://fc2blog.us",
+        "1": "https://fc2blog.us/cn/point/point1.html",
+        "2": "https://fc2blog.us/cn/faq.html"
+    },
+    "savefrom.net": {
+        "0": "https://zh.savefrom.net/72/download-from-tiktok",
+        "1": "https://zh.savefrom.net/97/download-from-instagram",
+        "2": "https://zh.savefrom.net/98/download-from-twitter"
+    },
+    "whatsapp.com": {
+        "0": "https://www.whatsapp.com",
+        "1": "https://www.whatsapp.com/features",
+        "2": "https://www.whatsapp.com/security"
+    },
+    "adf.ly": {
+        "0": "https://adf.ly/",
+        "1": "https://adf.ly/",
+        "2": "https://adf.ly/"
+    },
+    "cnn.com": {
+        "0": "https://edition.cnn.com/africa",
+        "1": "https://edition.cnn.com/americas",
+        "2": "https://edition.cnn.com/asia"
+    },
+    "ask.com": {
+        "0": "https://www.ask.com/web?q=ai",
+        "1": "https://www.ask.com/web?q=web",
+        "2": "https://www.ask.com/web?q=test"
+    },
+    "bbc.co.uk": {
+        "0": "https://www.bbc.com/news/world/africa",
+        "1": "https://www.bbc.com/news/world/asia",
+        "2": "https://www.bbc.com/news/world/europe"
+    },
+    "ettoday.net": {
+        "0": "https://www.ettoday.net/",
+        "1": "https://www.ettoday.net/",
+        "2": "https://www.ettoday.net/"
+    },
+    "blastingnews.com": {
+        "0": "https://es.blastingnews.com/",
+        "1": "https://uk.blastingnews.com/",
+        "2": "https://us.blastingnews.com/"
+    },
+    "uptodown.com": {
+        "0": "https://cn.uptodown.com/windows",
+        "1": "https://cn.uptodown.com/mac",
+        "2": "https://cn.uptodown.com/android"
+    },
+    "blogger.com": {
+        "0": "https://www.blogger.com/",
+        "1": "https://www.blogger.com/",
+        "2": "https://www.blogger.com/"
+    },
+    "etsy.com": {
+        "0": "https://www.etsy.com/",
+        "1": "https://www.etsy.com/",
+        "2": "https://www.etsy.com/"
+    },
+    "dailymotion.com": {
+        "0": "https://www.dailymotion.com/search/web/videos",
+        "1": "https://www.dailymotion.com/search/web/channels",
+        "2": "https://www.dailymotion.com/search/web/playlists"
+    },
+    "anthology.com": {
+        "0": "https://www.anthology.com/resources",
+        "1": "https://www.anthology.com/resources/blog",
+        "2": "https://www.anthology.com/resources/webinars"
+    },
+    "porn555.com": {
+        "0": "https://porn555.com/en/search/china",
+        "1": "https://porn555.com/en/search/japan",
+        "2": "https://porn555.com/en/search/america"
+    },
+    "rakuten.co.jp": {
+        "0": "https://www.rakuten.co.jp/",
+        "1": "https://www.rakuten.co.jp/",
+        "2": "https://www.rakuten.co.jp/"
+    },
+    "xvideos.com": {
+        "0": "https://www.xvideos.com/?k=china",
+        "1": "https://www.xvideos.com/?k=japan",
+        "2": "https://www.xvideos.com/?k=america"
+    },
+    "alibaba.com": {
+        "0": "https://www.alibaba.com/trade/search?SearchText=Clothing",
+        "1": "https://www.alibaba.com/trade/search?SearchText=shoe",
+        "2": "https://www.alibaba.com/trade/search?SearchText=bag"
+    },
+    "vimeo.com": {
+        "0": "https://vimeo.com/solutions/marketing",
+        "1": "https://vimeo.com/solutions/communications",
+        "2": "https://vimeo.com/solutions/video-monetization"
+    },
+    "nytimes.com": {
+        "0": "https://www.nytimes.com/section/world/africa",
+        "1": "https://www.nytimes.com/section/world/americas",
+        "2": "https://www.nytimes.com/section/world/asia"
+    },
+    "salesforce.com": {
+        "0": "https://www.salesforce.com/products/platform/features/mobile/",
+        "1": "https://www.salesforce.com/products/platform/products/shield/",
+        "2": "https://www.salesforce.com/products/platform/products/identity/"
+    },
+    "indeed.com": {
+        "0": "https://www.indeed.com/",
+        "1": "https://www.indeed.com/",
+        "2": "https://www.indeed.com/"
+    },
+    "detik.com": {
+        "0": "https://news.detik.com/berita",
+        "1": "https://news.detik.com/jabodetabek",
+        "2": "https://news.detik.com/internasional"
+    },
+    "amazonaws.com": {
+        "0": "https://aws.amazon.com/free/terms/",
+        "1": "https://aws.amazon.com/free/free-tier-faqs/",
+        "2": "https://aws.amazon.com/free/"
+    },
+    "tribunnews.com": {
+        "0": "https://www.tribunnews.com/internasional",
+        "1": "https://www.tribunnews.com/nasional",
+        "2": "https://www.tribunnews.com/news"
+    },
+    "dkn.tv": {
+        "0": "https://www.dkn.tv/cat/thoi-su",
+        "1": "https://www.dkn.tv/cat/the-gioi",
+        "2": "https://www.dkn.tv/cat/goc-nhin-dkn"
+    },
+    "onlinesbi.com": {
+        "0": "https://retail.onlinesbi.sbi/personal/",
+        "1": "https://retail.onlinesbi.sbi/personal/security_tips.html",
+        "2": "https://retail.onlinesbi.sbi/personal/sitemap.html"
+    },
+    "slideshare.net": {
+        "0": "https://www.slideshare.net/featured/category/art-photos",
+        "1": "https://www.slideshare.net/featured/category/automotive",
+        "2": "https://www.slideshare.net/featured/category/business"
+    },
+    "vice.com": {
+        "0": "https://www.vice.com/en/topic/politics",
+        "1": "https://www.vice.com/en/topic/extremism",
+        "2": "https://www.vice.com/en/topic/issues"
+    },
+    "stackexchange.com": {
+        "0": "https://meta.stackexchange.com/questions",
+        "1": "https://meta.stackexchange.com/tags",
+        "2": "https://meta.stackexchange.com/users"
+    },
+    "paypal.com": {
+        "0": "https://www.paypal.com/",
+        "1": "https://www.paypal.com/",
+        "2": "https://www.paypal.com/"
+    },
+    "quora.com": {
+        "0": "https://www.quora.com/",
+        "1": "https://www.quora.com/",
+        "2": "https://www.quora.com/"
+    },
+    "nownews.com": {
+        "0": "https://www.nownews.com/cat/column/",
+        "1": "https://www.nownews.com/cat/breaking/",
+        "2": "https://www.nownews.com/cat/news-summary/"
+    },
+    "cnet.com": {
+        "0": "https://www.cnet.com/roadshow/news/",
+        "1": "https://www.cnet.com/roadshow/reviews/",
+        "2": "https://www.cnet.com/roadshow/accessories/"
+    },
+    "wikihow.com": {
+        "0": "https://www.wikihow.com/Category:Arts-and-Entertainment",
+        "1": "https://www.wikihow.com/Category:Cars-%26-Other-Vehicles",
+        "2": "https://www.wikihow.com/Category:Computers-and-Electronics"
+    },
+    "theguardian.com": {
+        "0": "https://www.theguardian.com/uk/commentisfree",
+        "1": "https://www.theguardian.com/uk/sport",
+        "2": "https://www.theguardian.com/uk/culture"
+    },
+    "mediafire.com": {
+        "0": "https://www.mediafire.com/",
+        "1": "https://www.mediafire.com/",
+        "2": "https://www.mediafire.com/"
+    },
+    "theladbible.com": {
+        "0": "https://www.ladbible.com/",
+        "1": "https://www.ladbible.com/news",
+        "2": "https://www.ladbible.com/entertainment"
+    },
+    "chase.com": {
+        "0": "https://www.chase.com/",
+        "1": "https://www.chase.com/",
+        "2": "https://www.chase.com/"
+    },
+    "softonic.com": {
+        "0": "https://en.softonic.com/windows/games",
+        "1": "https://en.softonic.com/android/games",
+        "2": "https://en.softonic.com/mac/games"
+    },
+    "deviantart.com": {
+        "0": "https://www.deviantart.com",
+        "1": "https://www.deviantart.com/shop",
+        "2": "https://www.deviantart.com/topic"
+    },
+    "varzesh3.com": {
+        "0": "https://www.varzesh3.com/",
+        "1": "https://www.varzesh3.com/",
+        "2": "https://www.varzesh3.com/"
+    },
+    "spotify.com": {
+        "0": "https://www.spotify.com/",
+        "1": "https://www.spotify.com/",
+        "2": "https://www.spotify.com/"
+    },
+    "steampowered.com": {
+        "0": "https://store.steampowered.com/category/action/",
+        "1": "https://store.steampowered.com/category/action_run_jump/",
+        "2": "https://store.steampowered.com/category/fighting_martial_arts/"
+    },
+    "canva.com": {
+        "0": "https://www.canva.com/free/",
+        "1": "https://www.canva.com/pro/",
+        "2": "https://www.canva.com/for-teams/"
+    },
+    "box.com": {
+        "0": "https://www.box.com/overview",
+        "1": "https://www.box.com/security-compliance",
+        "2": "https://www.box.com/esignature"
+    },
+    "dailymail.co.uk": {
+        "0": "https://www.dailymail.co.uk/news/index.html",
+        "1": "https://www.dailymail.co.uk/ushome/index.html",
+        "2": "https://www.dailymail.co.uk/sport/index.html"
+    },
+    "godaddy.com": {
+        "0": "https://www.godaddy.com/",
+        "1": "https://www.godaddy.com/",
+        "2": "https://www.godaddy.com/"
+    },
+    "espn.com": {
+        "0": "https://www.espn.com/nfl/",
+        "1": "https://www.espn.com/nba/",
+        "2": "https://www.espn.com/mlb/"
+    },
+    "popcash.net": {
+        "0": "https://popcash.net/faq-publishers",
+        "1": "https://popcash.net/about-us",
+        "2": "https://popcash.net/contact"
+    },
+    "w3schools.com": {
+        "0": "https://www.w3schools.com/html/default.asp",
+        "1": "https://www.w3schools.com/html/html_intro.asp",
+        "2": "https://www.w3schools.com/html/html_editors.asp"
+    }
+}
