@@ -24,9 +24,9 @@ def dataset_loading_multitab():
         train = np.array(pkl.load(handle, encoding='latin1'))
     with open(dataset_dir + "test.pickle", 'rb') as handle:
         test = np.array(pkl.load(handle, encoding='latin1')) 
-    X_train = train[:, 0:19999]
-    y_train = train[:, 0:19999]
-    X_test = test[:, 1500:4000]
-    y_test = test[:, 20000:20004]
+    X_train = train[:, 0:20000]
+    y_train = train[:, 20000:20005]
+    X_test = test[:, 0:20000]
+    y_test = test[:, 20000:20005]
     print("Data loaded successfully !")
     return X_train, y_train, X_test, y_test

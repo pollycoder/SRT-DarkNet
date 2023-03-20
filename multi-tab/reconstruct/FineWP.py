@@ -8,7 +8,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from scipy import stats
 import sklearn.datasets as dt
 from sklearn import manifold
-from utility import dataset_loading
+from utility import dataset_loading_multitab
 import datetime
 
 
@@ -197,7 +197,7 @@ class randomForest():
         X_select_index = np.where(importance > threshold)
         X_select = dataset[:, importance > threshold]
         dataset = np.array(dataset)
-        return X_select_index, X_select
+        return importance, X_select, threshold
 
 # Original_seqs: [original_seq[0], original_seq[1], ......]
 def feature_extractor_ST(original_seqs, webpages):
@@ -207,9 +207,10 @@ def feature_extractor_ST(original_seqs, webpages):
     for seq in original_seqs:
         temp = feature_extractor_ST_rare(seq)
         final_seqs.append(temp)
+    print("Loading finished !")
     rf = randomForest()
     rf.build(final_seqs, webpages)
-    index_array, st_data = rf.select_feature(final_seqs)
+    importance, st_data = rf.select_feature(final_seqs)
     try:
         print("Get ST successfully !")
     except:
@@ -217,7 +218,7 @@ def feature_extractor_ST(original_seqs, webpages):
     end = datetime.datetime.now()
     print('total time: ', (end - start).seconds, "s")
     print("==============================================")
-    return index_array, st_data
+    return importance, st_data
 
 
 ###############################################
@@ -262,16 +263,21 @@ def dataset_preprocess(X_data, webpages, X_test):
         st = st_dataset[i]
         feature_vector = np.concatenate((sf, st))
         final_dataset = np.row_stack((final_dataset, feature_vector))
+        if i % 4000:
+            print("Epoch", i / 4000)
     print("-----------------------------------------")
 
     ## Preprocess testing data
     print("Start to join the feature vector of testset===========")
+    threshold = 0.04
     block_test, sf_test = preprocess_B_SF(X_test)
     final_seqs = []
     for seq in X_test:
         temp = feature_extractor_ST_rare(seq)
         final_seqs.append(temp)
-    st_test = final_seqs[:, st_index]
+    final_seqs = np.array(final_seqs)
+    st_test = final_seqs[:, st_index > threshold]
+    print("Test shape:", st_test.shape)
     block = block_test[0]
     sf = sf_test[0]
     st = st_test[0]
@@ -301,9 +307,8 @@ def dataset_preprocess(X_data, webpages, X_test):
 
 # Test module
 if __name__ == '__main__':
-    '''
     start = datetime.datetime.now()
-    X_train, y_train, X_test, y_test = dataset_loading()
+    X_train, y_train, X_test, y_test = dataset_loading_multitab()
     dataset, testset = dataset_preprocess(X_train, y_train, X_test)
     print("Dataset print finished ! >>>>>>>>>>>>>>>>>>>>>>>>>")
     model = KNeighborsClassifier(n_neighbors=5)
@@ -312,9 +317,4 @@ if __name__ == '__main__':
     print("Accuracy = ", result)
     end = datetime.datetime.now()
     print('total time: ', (end - start).seconds, "s")
-    '''
-    array = np.array([[-1, 1, 1, 1, 1, 1, 1, 1],
-                     [-1, 1, 1, 1, 1, 1, 1, 1]]
-                    )
-    label = np.array([1, 1])
-    dataset, testset = dataset_preprocess(array, label, array)
+    
