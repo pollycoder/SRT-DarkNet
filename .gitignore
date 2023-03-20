@@ -135,5 +135,4 @@ dmypy.json
 *.pkl
 *.csv
 
-# Crawler
-Multitab-Tor-WFP
+
