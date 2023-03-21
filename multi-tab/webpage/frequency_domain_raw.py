@@ -105,7 +105,7 @@ if __name__ == '__main__':
 
     print("Start training (LR)")
     start = datetime.datetime.now()
-    model = LogisticRegression(n_jobs=-1, solver='lbfgs', max_iter=3000)
+    model = LogisticRegression(n_jobs=-1)
     model.fit(fft_list_train, y_train)
     acc = model.score(fft_list_test, y_test)
     print("Acc =", acc)

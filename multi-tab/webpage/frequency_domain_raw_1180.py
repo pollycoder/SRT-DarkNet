@@ -11,7 +11,7 @@ from sklearn.svm import SVC
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
-from utility import dataset_loading
+from utility import dataset_loading_multitab
 
 import datetime
 import numpy as np
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     print("CPU cores:", cores)
 
     start = datetime.datetime.now()
-    X_train, y_train, X_test, y_test = dataset_loading()
+    X_train, y_train, X_test, y_test = dataset_loading_multitab()
     print("X_train shape:", X_train.shape)
     print("X_test shape: ", X_test.shape)
     print("y_train shape:", y_train.shape)
@@ -53,10 +53,10 @@ if __name__ == '__main__':
     print("======================================")
     print("Start processing training data:")
     start = datetime.datetime.now()
-    fft_list_train = double_fft(X_train)
+    fft_list_train = X_train
     print("Label shape:", y_train.shape)  
     print("Start processing testing data")
-    fft_list_test = double_fft(X_test)
+    fft_list_test = X_test
     print("Label shape:", y_test.shape)
     end = datetime.datetime.now()
     print('Feature extracting time: ', (end - start).seconds, "s")
@@ -71,6 +71,7 @@ if __name__ == '__main__':
     end = datetime.datetime.now()
     print('LD time: ', (end - start).seconds, "s")
     print("--------------------------------------")
+
 
     print("Start training (kNN)")
     start = datetime.datetime.now()

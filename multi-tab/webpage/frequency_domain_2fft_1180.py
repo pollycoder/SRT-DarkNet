@@ -11,7 +11,7 @@ from sklearn.svm import SVC
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
-from utility import dataset_loading
+from utility import dataset_loading_multitab
 
 import datetime
 import numpy as np
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     print("CPU cores:", cores)
 
     start = datetime.datetime.now()
-    X_train, y_train, X_test, y_test = dataset_loading()
+    X_train, y_train, X_test, y_test = dataset_loading_multitab()
     print("X_train shape:", X_train.shape)
     print("X_test shape: ", X_test.shape)
     print("y_train shape:", y_train.shape)
