@@ -30,3 +30,5 @@ def dataset_loading_multitab():
     y_test = test[:, 20000:20005]
     print("Data loaded successfully !")
     return X_train, y_train, X_test, y_test
+
+
