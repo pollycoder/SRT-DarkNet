@@ -3,8 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import manifold
 import sklearn.datasets as dt
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import normalize
+
 
 # Classifiers: K-NN
 class kNN():
