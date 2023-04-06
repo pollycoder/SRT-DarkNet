@@ -3,14 +3,12 @@ Experiment for webpage fingerprinting to webpages with same home page domain
 Here we referred to the research about webpage classification through frequency domain features
 '''
 
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
 import matplotlib.pyplot as plt
 from utility import dataset_loading_wt, showScatter
 
 import datetime
-import random
 import numpy as np
 from tqdm import trange
 from multiprocessing import cpu_count

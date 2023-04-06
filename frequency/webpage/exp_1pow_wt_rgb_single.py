@@ -5,18 +5,13 @@
 # classification through frequency domain features.
 # Exp: Power spectrum (Self-adapt)
 ###################################################
-
-from sklearn.neighbors import KNeighborsClassifier
-
-
-from utility import dataset_loading_nodef,showScatter
-import matplotlib.pyplot as plt
-
+from utility import dataset_loading_wt, rgb_singlepage
 import datetime
-import random
 import numpy as np
 from tqdm import trange
 from multiprocessing import cpu_count
+import numpy as np
+import matplotlib.pyplot as plt
 
 def fft_processing(X_matrix):
     fft_list = []
@@ -48,7 +43,7 @@ if __name__ == '__main__':
     print("CPU cores:", cores)
 
     start = datetime.datetime.now()
-    X_train, y_train, X_test, y_test = dataset_loading_nodef()
+    X_train, y_train, X_test, y_test = dataset_loading_wt()
     print("X_train shape:", X_train.shape)
     print("X_test shape: ", X_test.shape)
     print("y_train shape:", y_train.shape)
@@ -59,20 +54,18 @@ if __name__ == '__main__':
     print("======================================")
     print("Start processing training data:")
     start = datetime.datetime.now()
-    fft_list_train = fft_processing(X_train)
-    print("Label shape:", y_train.shape)  
+    X_train = fft_processing(X_train)
     print("Start processing testing data")
-    fft_list_test = fft_processing(X_test)
-    print("Label shape:", y_test.shape)
+    X_test = fft_processing(X_test)
     end = datetime.datetime.now()
     print('Feature extracting time: ', (end - start).seconds, "s")
     print("======================================")
 
+    index = 70
+    width = 50
+    title = "Walkie-Talkie-RGB(n=" + str(index) + ")"
+    rgb_singlepage(X_train, y_train, index, width, title)
+    plt.show()
+    
 
-    # Plot
-    for i in range(0, X_train.shape[0]):
-        if y_train[i] == 23:
-            plt.subplot(X_train.shape[0], 1, i + 1)
-            y = range(1, 10*X_train.shape[1], 10)
-            plt.plot(y, X_train[i,:])
-            plt.title("psd_corr")
+   

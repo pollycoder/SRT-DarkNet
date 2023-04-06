@@ -5,24 +5,38 @@
 # classification through frequency domain features.
 # Exp: Power spectrum (Self-adapt)
 ###################################################
-
 from sklearn.neighbors import KNeighborsClassifier
-
-
-from utility import dataset_loading_wt,showScatter
+from utility import dataset_loading_wtfpad,showScatter
 import matplotlib.pyplot as plt
-
 import datetime
 import random
 import numpy as np
 from tqdm import trange
 from multiprocessing import cpu_count
+from scipy.signal import butter, lfilter
 
-def fft_processing(X_matrix):
+# Filterer
+def butter_lowpass(cutoff, fs, order=5):
+    nyq = 0.5 * fs
+    normal_cutoff = cutoff / nyq
+    b, a = butter(order, normal_cutoff, btype='low', analog=False)
+    return b, a
+
+def lowpass_filter(data, cutoff_freq, fs, order=5):
+    b, a = butter_lowpass(cutoff_freq, fs, order=order)
+    y = lfilter(b, a, data)
+    return y
+
+
+fs = 1000
+cutoff_freq = 7
+order = 6
+
+
+def fft_processing_low(X_matrix, fs, cutoff_freq, order):
     fft_list = []
-    n = 30
     for i in trange(0, X_matrix.shape[0]):
-        signal = X_matrix[i,:]
+        signal = lowpass_filter(X_matrix[i,:], cutoff_freq, fs, order)
         fft_res = np.fft.fft(signal)
         fft_res = abs(fft_res)[:len(fft_res)//2] / len(signal) * 2
 
@@ -32,7 +46,6 @@ def fft_processing(X_matrix):
         fft_list_temp = psd_corr_res.tolist()
         fft_list.append(fft_list_temp)
     fft_list = np.array(fft_list)
-    fft_list = fft_list[:, 0:n]
     print("Succeed !", end=" ")
     print("Shape =", fft_list.shape)
     return fft_list
@@ -44,7 +57,7 @@ if __name__ == '__main__':
     print("CPU cores:", cores)
 
     start = datetime.datetime.now()
-    X_train, y_train, X_test, y_test = dataset_loading_wt()
+    X_train, y_train, X_test, y_test = dataset_loading_wtfpad()
     X_train_raw, y_train_raw, X_test_raw, y_test_raw = X_train, y_train, X_test, y_test
     print("X_train shape:", X_train.shape)
     print("X_test shape: ", X_test.shape)
@@ -56,10 +69,10 @@ if __name__ == '__main__':
     print("======================================")
     print("Start processing training data:")
     start = datetime.datetime.now()
-    fft_list_train = fft_processing(X_train)
+    fft_list_train = fft_processing_low(X_train, fs, cutoff_freq, order)
     print("Label shape:", y_train.shape)  
     print("Start processing testing data")
-    fft_list_test = fft_processing(X_test)
+    fft_list_test = fft_processing_low(X_test, fs, cutoff_freq, order)
     print("Label shape:", y_test.shape)
     end = datetime.datetime.now()
     print('Feature extracting time: ', (end - start).seconds, "s")
@@ -80,11 +93,11 @@ if __name__ == '__main__':
     print("--------------------------------------")
     
 
-    # Plotting
+    # Plotting-Scatter
     print("Start plotting...")
-    n = 5
-    max = 80
-    random_list = random.sample(range(1,y_train.max + 1),n)
+    n = 10
+    max = 90
+    random_list = random.sample(range(1,np.max(y_train) + 1),n)
     print("Random web: ", random_list)
     X_plot_train = []
     y_plot_train = []
@@ -125,6 +138,6 @@ if __name__ == '__main__':
     print("X_plot_raw shape: ", X_plot_raw.shape)
     print("X_plot_rawtest shape: ", X_plot_rawtest.shape)
 
-    showScatter(X_plot_train, y_plot_train, X_plot_test, y_plot_test, "Result-PowerSpec-WalkieTalkie", acc, 1, n, max)
-    showScatter(X_plot_raw, y_plot_train, X_plot_rawtest, y_plot_test, "Result-Raw-WalikieTalkie", 0.0338, 2, n, max)
+    showScatter(X_plot_train, y_plot_train, X_plot_test, y_plot_test, "Result-PowerSpec", acc, 1, n, max)
+    showScatter(X_plot_raw, y_plot_train, X_plot_rawtest, y_plot_test, "Result-Raw", 0.23, 2, n, max)
     plt.show()

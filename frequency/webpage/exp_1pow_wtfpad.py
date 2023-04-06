@@ -6,7 +6,6 @@
 # Exp: Power spectrum (Self-adapt)
 ###################################################
 
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
 
@@ -21,6 +20,7 @@ from multiprocessing import cpu_count
 
 def fft_processing(X_matrix):
     fft_list = []
+    n = 30
     for i in trange(0, X_matrix.shape[0]):
         signal = X_matrix[i,:]
         fft_res = np.fft.fft(signal)
@@ -32,14 +32,9 @@ def fft_processing(X_matrix):
         fft_list_temp = psd_corr_res.tolist()
         fft_list.append(fft_list_temp)
     fft_list = np.array(fft_list)
+    fft_list = fft_list[:, 0:n]
     print("Succeed !", end=" ")
     print("Shape =", fft_list.shape)
-    return fft_list
-
-
-def double_fft(X_matrix):
-    fft_list = fft_processing(X_matrix)
-    fft_list = fft_processing(fft_list)
     return fft_list
 
 
@@ -89,7 +84,7 @@ if __name__ == '__main__':
     print("Start plotting...")
     n = 10
     max = 70
-    random_list = random.sample(range(1,76),n)
+    random_list = random.sample(range(1,y_train.max + 1),n)
     print("Random web: ", random_list)
     X_plot_train = []
     y_plot_train = []
