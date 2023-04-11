@@ -11,7 +11,7 @@ import datetime
 def dataset_loading_nodef():
     print("Loading datasets ....")
     start = datetime.datetime.now()
-    dataset_dir = "../../../datasets/"
+    dataset_dir = "../../datasets/"
     with open(dataset_dir + "X_train_NoDef.pkl", 'rb') as handle:
         X_train = np.array(pkl.load(handle, encoding='latin1'))
         #X_train = X_train[:,1000:1100]
@@ -28,14 +28,14 @@ def dataset_loading_nodef():
     print("y_train shape:", y_train.shape)
     print("y_test shape: ", y_test.shape)
     end = datetime.datetime.now()
-    print('Data processing time: ', (end - start).seconds, "s")
+    print('Data loading time: ', (end - start).seconds, "s")
     return X_train, y_train, X_test, y_test
 
 
 def dataset_loading_wtfpad():
     print("Loading datasets ....")
     start = datetime.datetime.now()
-    dataset_dir = "../../../datasets/"
+    dataset_dir = "../../datasets/"
     with open(dataset_dir + "X_train_WTFPAD.pkl", 'rb') as handle:
         X_train = np.array(pkl.load(handle, encoding='latin1'))
     with open(dataset_dir + "y_train_WTFPAD.pkl", 'rb') as handle:
@@ -51,14 +51,14 @@ def dataset_loading_wtfpad():
     print("y_train shape:", y_train.shape)
     print("y_test shape: ", y_test.shape)
     end = datetime.datetime.now()
-    print('Data processing time: ', (end - start).seconds, "s")
+    print('Data loading time: ', (end - start).seconds, "s")
     return X_train, y_train, X_test, y_test
 
 
 def dataset_loading_wt():
     print("Loading datasets ....")
     start = datetime.datetime.now()
-    dataset_dir = "../../../datasets/"
+    dataset_dir = "../../datasets/"
     with open(dataset_dir + "X_train_WalkieTalkie.pkl", 'rb') as handle:
         X_train = np.array(pkl.load(handle, encoding='latin1'))
     with open(dataset_dir + "y_train_WalkieTalkie.pkl", 'rb') as handle:
@@ -75,5 +75,5 @@ def dataset_loading_wt():
     print("y_train shape:", y_train.shape)
     print("y_test shape: ", y_test.shape)
     end = datetime.datetime.now()
-    print('Data processing time: ', (end - start).seconds, "s")
+    print('Data loading time: ', (end - start).seconds, "s")
     return X_train, y_train, X_test, y_test

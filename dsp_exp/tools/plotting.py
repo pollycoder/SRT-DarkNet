@@ -65,9 +65,13 @@ def showScatter(train_data, train_color, test_data, test_color, title, score, i,
     plt.subplot(1, 2, i)
     finalTitle = title + "(n=" + str(n) + ")\nAccuracy = " + str(score)
     plt.title(finalTitle)
-    plt.scatter(train_tsne[:, 0], train_tsne[:, 1], c=train_color, marker='o', label='training data', edgecolors='k')
+    plt.scatter(train_tsne[:, 0], train_tsne[:, 1], 
+                c=train_color, marker='o', 
+                label='training data', edgecolors='k')
     plt.legend()
-    plt.scatter(test_tsne[:, 0], test_tsne[:, 1], c=test_color, marker='v', label='testing data', edgecolors='k')
+    plt.scatter(test_tsne[:, 0], test_tsne[:, 1], 
+                c=test_color, marker='v', 
+                label='testing data', edgecolors='k')
     plt.legend()
     plt.colorbar()
     maxrange = max

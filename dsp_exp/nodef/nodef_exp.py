@@ -1,9 +1,11 @@
 import sys
 sys.path.append("../")
+
 from tools.data_loading import dataset_loading_nodef
 from tools.plotting import showScatter, sample_scatter
 from tools.dsp import psd
-from tools.classifiers import kNN
+from tools.classifiers import DNN, kNN
+
 import matplotlib.pyplot as plt
 import datetime
 from multiprocessing import cpu_count
@@ -21,7 +23,7 @@ cutoff_freq = 30
 order = 5
 
 if __name__ == '__main__':  
-    print("Frequency domain analysis attack")
+    print("PSD Training and testing for traces - No Defense")
     cores = cpu_count()
     print("CPU cores:", cores)
 
@@ -35,19 +37,23 @@ if __name__ == '__main__':
     print("======================================")
     print("Start processing training data:")
     start = datetime.datetime.now()
-    fft_list_train = psd(X_train, filter='butter')                          # Change the filterer
+    fft_list_train = psd(X_train, filter='direct')                          # Change the filterer
     print("Start processing testing data")
-    fft_list_test = psd(X_test, filter='butter')                            # Change the filterer
+    fft_list_test = psd(X_test, filter='direct')                            # Change the filterer
     end = datetime.datetime.now()
     print('Feature extracting time: ', (end - start).seconds, "s")
     print("======================================")
 
-
     y_pred, acc = kNN(fft_list_train, y_train, fft_list_test, y_test)
+    y_pred, acc = DNN(fft_list_train, y_train, fft_list_test, y_test)
     
 
+    
+    
+    '''
     # Scattering
     n = 10                                                                  # Classes going to plot
+    max = 80                                                                # Range of the axis
     X_plot_train, y_plot_train, \
     X_plot_test, y_plot_test,   \
     X_plot_raw, X_plot_rawtest = sample_scatter(fft_list_train, 
@@ -62,3 +68,4 @@ if __name__ == '__main__':
                 X_plot_rawtest, y_plot_test, 
                 "Result-Raw", 0.23, 2, n, max)
     plt.show()
+    '''
