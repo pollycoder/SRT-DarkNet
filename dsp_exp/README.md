@@ -6,11 +6,8 @@ The directories for experiments include `/nodef`, `/wtfpad`, `/wt`, which corres
 
 For each experiment directory, we have 5 python files having different jobs to do:
 
-```console
-xxx_exp.py				      Main experiment, it will output the result
-xxx_raw_exp.py		      Main experiment upon non-processed traffic
-xxx_psd.py				      Drawing PSD figure
-xxx_rgb.py				      Drawing RGB figure for all websites
-xxx_rgb_single.py	      Drawing RGB figure for single website
-```
-
+|xxx_exp.py|Main experiment, it will output the result|
+|xxx_raw_exp.py|Main experiment upon non-processed traffic|
+|xxx_psd.py|Drawing PSD figure|
+|xxx_rgb.py|Drawing RGB figure for all websites|
+|xxx_rgb_single.py|Drawing RGB figure for single website|
