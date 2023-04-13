@@ -1,34 +1,32 @@
 import sys
 sys.path.append("../")
-from tools.data_loading import dataset_loading_wtfpad
+from tools.data_loading import data_processing
 from tools.dsp import psd
 import matplotlib.pyplot as plt
-import datetime
 import numpy as np
 from multiprocessing import cpu_count
 
-
 ##########################################
 # Experiment for frequency domain analysis
-# Script for drawing PSD - WTF-PAD
+# Script for drawing PSD - Front
 # DSP: filterers - none, butter, gaussian
 # Output: PSD
 ##########################################
+
 
 if __name__ == '__main__':  
     print("Frequency domain analysis attack")
     cores = cpu_count()
     print("CPU cores:", cores)
 
-    X_train, y_train, X_test, y_test = dataset_loading_wtfpad()
-    X_train = psd(X_train, filter='butter')
+    X_train, y_train, X_test, y_test = data_processing(prop=0.1, db_name="Front")
+    X_train = psd(X_train, filter='butter-low')
 
 
     # Plot
     j = 0
     n = 54
     num = 5
-    
     for i in range(0, X_train.shape[0]):
         if y_train[i] == n:
             j = j + 1
@@ -42,5 +40,6 @@ if __name__ == '__main__':
             plt.xticks(ti)  # 设定刻度    
         if j == num:
             break
-    plt.suptitle("WTFPAD-PSD (n=" + str(n) + ")")
+    plt.suptitle("Front-PSD (n=" + str(n) + ")")
     plt.show()
+   

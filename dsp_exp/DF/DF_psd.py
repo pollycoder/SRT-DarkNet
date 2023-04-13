@@ -1,6 +1,6 @@
 import sys
 sys.path.append("../")
-from tools.data_loading import dataset_loading_nodef
+from tools.data_loading import data_processing
 from tools.dsp import psd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -8,7 +8,7 @@ from multiprocessing import cpu_count
 
 ##########################################
 # Experiment for frequency domain analysis
-# Script for drawing PSD - No denfense
+# Script for drawing PSD - DF
 # DSP: filterers - none, butter, gaussian
 # Output: PSD
 ##########################################
@@ -19,8 +19,8 @@ if __name__ == '__main__':
     cores = cpu_count()
     print("CPU cores:", cores)
 
-    X_train, y_train, X_test, y_test = dataset_loading_nodef()
-    X_train = psd(X_train, filter='butter')
+    X_train, y_train, X_test, y_test = data_processing(prop=0.1, db_name="DF")
+    X_train = psd(X_train, filter='butter-low')
 
 
     # Plot

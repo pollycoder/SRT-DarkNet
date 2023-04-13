@@ -10,6 +10,7 @@ import datetime
 # Filterers: 
 #   low-pass - gaussian + butter
 #   high-pass - butter
+#   combine: Window + Butter
 #########################################
 
 # Get power spectrum density

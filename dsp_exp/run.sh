@@ -7,12 +7,12 @@
 #########################################
 rm -rf result
 mkdir result
-cd nodef
-nohup python -u nodef_exp.py > ../result/nodef_exp.log 2>&1 &
-nohup python -u nodef_raw_exp.py > ../result/nodef_raw_exp.log 2>&1 &
-cd ../wtfpad
-nohup python -u wtfpad_raw_exp.py > ../result/wtfpad_raw_exp.log 2>&1 &
-nohup python -u wtfpad_exp.py > ../result/wtfpad_exp.log 2>&1 &
-cd ../wt
-nohup python -u wt_raw_exp.py > ../result/wt_raw_exp.log 2>&1 &
-nohup python -u wt_exp.py > ../result/wt_exp.log 2>&1 &
+cd DF
+nohup python -u DF_exp.py > ../result/DF_exp.log 2>&1 &
+nohup python -u DF_raw_exp.py > ../result/DF_raw_exp.log 2>&1 &
+cd ../WTF_PAD
+nohup python -u WTF_PAD_raw_exp.py > ../result/WTF_PAD_raw_exp.log 2>&1 &
+nohup python -u WTF_PAD_exp.py > ../result/WTF_PAD_exp.log 2>&1 &
+cd ../Front
+nohup python -u Front_raw_exp.py > ../result/Front_raw_exp.log 2>&1 &
+nohup python -u Front_exp.py > ../result/Front_exp.log 2>&1 &

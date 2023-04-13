@@ -52,22 +52,9 @@ def RF(X_train, y_train, X_test, y_test):
 def DNN(X_train, y_train, X_test, y_test):
     print("Start training (MLP)")
     # 定义MLP分类器
-    mlp = MLPClassifier(max_iter=1000)
-
-    # 定义要搜索的参数范围
-    param_grid = {
-    'hidden_layer_sizes': [(100, 100),(150, 150), (200, 200), (100,), (200,)],
-    'activation': ['relu', 'tanh'],
-    'alpha': [0.0001, 0.001, 0.01],
-    }
-
-    # 使用网格搜索来搜索最佳参数组合
-    grid_search = GridSearchCV(mlp, param_grid=param_grid, cv=5, n_jobs=1)
-    grid_search.fit(X_train, y_train)
-
-    # 输出最佳参数和训练集上的准确率
-    print("Best parameter: ", grid_search.best_params_)
-    print("Train accuracy: {:.2f}".format(grid_search.best_score_))
+    start = datetime.datetime.now()
+    mlp = MLPClassifier(max_iter=1000, hidden_layer_sizes=(200,200), early_stopping=True, verbose=True,random_state=420)
+    mlp.fit(X_train, y_train)
     end = datetime.datetime.now()
     print("Training succeeded !")
     print('Training time: ', (end - start).seconds, "s")
@@ -75,7 +62,7 @@ def DNN(X_train, y_train, X_test, y_test):
     # 在测试集上评估性能
     print("Now start testing...")
     start = datetime.datetime.now()
-    acc = grid_search.score(X_test, y_test)
+    acc = mlp.score(X_test, y_test)
     print("Acc={:.2f}".format(acc))
     y_pred = mlp.predict(X_test)
     end = datetime.datetime.now()
