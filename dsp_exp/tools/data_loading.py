@@ -2,7 +2,7 @@ import pickle as pkl
 import numpy as np
 import datetime
 from tqdm import trange
-from scipy.interpolate import interp1d
+from tools.dsp import resample
 
 dataset_dir = "../../defense_datasets/"
 
@@ -11,37 +11,6 @@ dataset_dir = "../../defense_datasets/"
 # WTF-PAD, Front, DF
 # Loading the datasets and resample the data
 ############################################
-
-# Resample the data
-def resample(time, signal, resample_rate, cutoff_time):
-    # Create a new time sequence, and find the ending time
-    index = 0
-    repeat_list = []
-    while True:
-        if time[index] == 0 or index == len(time) - 1:
-            break
-        if time[index] == time[index + 1] and time[index] != 0:
-            repeat_list.append(index)
-        index += 1
-    time = time[0:index]
-    time = np.delete(time, repeat_list)
-    signal = signal[0:index]
-    signal = np.delete(signal, repeat_list)
-    new_time = np.arange(time[0], time[-1], 1.0 / resample_rate)
-
-    # Interpolation for resampling
-    f = interp1d(time, signal, kind='cubic')
-    new_signal = f(new_time)
-
-    # Padding or cutting the signal to make it have the length
-    # Length = cutoff time * sampling rate
-    length = cutoff_time * resample_rate
-    while len(new_signal) < length:
-        zero_list = np.zeros(length - len(new_signal)).tolist()
-        new_signal = np.append(new_signal, zero_list)
-    if len(new_signal) > length:
-        new_signal = new_signal[0:length]
-    return new_signal
 
 
 # Loading dataset
@@ -74,6 +43,20 @@ def data_processing(prop, db_name):
     return X_train, y_train, X_test, y_test
 
 
+def data_direction(prop, db_name):
+    start = datetime.datetime.now()
+    print("========================================")
+    print("Process the dataset")
+    time, direction, label = data_loading(db_name)
+    print("-----------------------------------------")
+    sample_num = int(direction.shape[0] * (1-prop))
+    X_train = direction[0:sample_num,:]
+    y_train = label[0:sample_num]
+    X_test = direction[sample_num:-1,:]
+    y_test = label[sample_num:-1]
+    return X_train, y_train, X_test, y_test
+
+
 def data_loading(dataset):
     start = datetime.datetime.now()
     print("Loading datasets")
@@ -84,7 +67,6 @@ def data_loading(dataset):
     print("Succeeded. Dataset:", dataset)
     print("Time stamps shape:", time.shape)
     print("Directions shape:", direction.shape)
-    print("Direction min:", np.min(direction))
     print("Label shape:", label.shape)
     end = datetime.datetime.now()
     print('Data loading time: ', (end - start).seconds, "s")

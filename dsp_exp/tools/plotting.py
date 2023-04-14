@@ -1,3 +1,5 @@
+import matplotlib as mpl
+mpl.use('Agg')
 from sklearn import manifold
 import matplotlib.pyplot as plt
 from tqdm import trange

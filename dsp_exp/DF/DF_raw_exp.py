@@ -1,7 +1,7 @@
 import sys
 sys.path.append("../")
 
-from tools.data_loading import data_processing
+from tools.data_loading import data_processing, data_direction
 from tools.plotting import showScatter, sample_scatter
 from tools.dsp import psd
 from tools.classifiers import RF, DNN, DT, LR
@@ -28,8 +28,25 @@ if __name__ == '__main__':
     print("CPU cores:", cores)
 
     # Loading data
-    start = datetime.datetime.now()
+    print("Start full-data experiment...")
     X_train, y_train, X_test, y_test = data_processing(prop=0.1, db_name="DF")
+    
+    # Processing data
+    print("======================================")
+    print("Start processing training data:")
+    start = datetime.datetime.now()
+    fft_list_train = X_train                          # Change the filterer
+    print("Start processing testing data")
+    fft_list_test = X_test                            # Change the filterer
+    end = datetime.datetime.now()
+    print('Feature extracting time: ', (end - start).seconds, "s")
+    print("======================================")
+
+    y_pred, acc = DNN(fft_list_train, y_train, fft_list_test, y_test)
+
+    # Loading data
+    print("Start direction-only experiment...")
+    X_train, y_train, X_test, y_test = data_direction(prop=0.1, db_name="DF")
     
     # Processing data
     print("======================================")
@@ -62,5 +79,5 @@ if __name__ == '__main__':
     showScatter(X_plot_raw, y_plot_train, 
                 X_plot_rawtest, y_plot_test, 
                 "Result-Raw", 0.23, 2, n, max)
-    plt.show()
+    plt.savefig("../result/scatter/DF_raw_exp.png")
     

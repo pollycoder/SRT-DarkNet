@@ -2,16 +2,50 @@ import numpy as np
 from tqdm import trange
 from scipy.signal import lfilter, butter, firwin
 from scipy.fftpack import fft, ifft
+from scipy.interpolate import interp1d
 import datetime
 
 #########################################
 # Digital signals processing module
+# Resampling: fill in loads of 0-s
 # PSD: Get the power spectrum of the trace
 # Filterers: 
 #   low-pass - gaussian + butter
 #   high-pass - butter
 #   combine: Window + Butter
 #########################################
+
+# Resampling the traces
+def resample(time, signal, resample_rate, cutoff_time):
+    # Create a new time sequence, and find the ending time
+    index = 0
+    repeat_list = []
+    while True:
+        if time[index] == 0 or index == len(time) - 1:
+            break
+        if time[index] == time[index + 1] and time[index] != 0:
+            repeat_list.append(index)
+        index += 1
+    time = time[0:index]
+    time = np.delete(time, repeat_list)
+    signal = signal[0:index]
+    signal = np.delete(signal, repeat_list)
+    new_time = np.arange(time[0], time[-1], 1.0 / resample_rate)
+
+    # Interpolation for resampling
+    f = interp1d(time, signal, kind='zero')
+    new_signal = f(new_time)
+
+    # Padding or cutting the signal to make it have the length
+    # Length = cutoff time * sampling rate
+    length = cutoff_time * resample_rate
+    while len(new_signal) < length:
+        zero_list = np.zeros(length - len(new_signal)).tolist()
+        new_signal = np.append(new_signal, zero_list)
+    if len(new_signal) > length:
+        new_signal = new_signal[0:length]
+    return new_signal
+
 
 # Get power spectrum density
 def psd(X_matrix, filter='none'):

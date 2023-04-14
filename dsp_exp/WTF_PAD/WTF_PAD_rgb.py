@@ -27,6 +27,6 @@ if __name__ == '__main__':
     width = 50
     title = "WTF_PAD-RGB"
     rgb(X_train, y_train, min, max, width, title)
-    plt.show()
+    plt.savefig("../result/rgb/WTF_PAD_exp.png")
     
    

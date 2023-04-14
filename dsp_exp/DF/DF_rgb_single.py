@@ -26,7 +26,7 @@ if __name__ == '__main__':
     width = 50
     title = "DF-RGB(n=" + str(index) + ")"
     rgb_singlepage(X_train, y_train, index, width, title)
-    plt.show()
+    plt.savefig("../result/rgb/DF_exp_single.png")
     
 
    

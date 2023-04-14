@@ -1,9 +1,9 @@
 import sys
 sys.path.append("../")
-from tools.data_loading import data_processing
+from tools.data_loading import data_processing, data_direction
 from tools.plotting import showScatter, sample_scatter
 from tools.dsp import psd
-from tools.classifiers import kNN
+from tools.classifiers import DNN
 import matplotlib.pyplot as plt
 import datetime
 from multiprocessing import cpu_count
@@ -17,7 +17,7 @@ from multiprocessing import cpu_count
 ##########################################
 
 
-fs = 1000
+fs = 250
 cutoff_freq = 30
 order = 5
 
@@ -25,12 +25,17 @@ if __name__ == '__main__':
     print("PSD Training and testing for traces - WTF-PAD")
     cores = cpu_count()
     print("CPU cores:", cores)
+    print("======================================")
 
+    # Loading data
+    print("Start full-data experiment...")
     start = datetime.datetime.now()
     X_train, y_train, X_test, y_test = data_processing(prop=0.1, db_name="WTF_PAD")
+    print(X_train)
+    X_train_raw, y_train_raw, X_test_raw, y_test_raw \
+        = X_train, y_train, X_test, y_test
     
-    #X_train_raw, y_train_raw, X_test_raw, y_test_raw = X_train, y_train, X_test, y_test
-    
+    # Processing data
     print("======================================")
     print("Start processing training data:")
     start = datetime.datetime.now()
@@ -41,24 +46,23 @@ if __name__ == '__main__':
     print('Feature extracting time: ', (end - start).seconds, "s")
     print("======================================")
 
-    
-    y_pred, acc = kNN(fft_list_train, y_train, fft_list_test, y_test)
-    
-    
+    # Testing
+    y_pred, acc = DNN(fft_list_train, y_train, fft_list_test, y_test)
     
     # Scattering
     n = 10                                                                  # Classes going to plot
+    max = 80                                                                # Range of the axis
     X_plot_train, y_plot_train, \
     X_plot_test, y_plot_test,   \
     X_plot_raw, X_plot_rawtest = sample_scatter(fft_list_train, 
                                                 y_train, fft_list_test, 
                                                 y_test, y_pred, 
-                                                X_train, 
-                                                X_test, n)              # Choose the samples for scattering
+                                                X_train_raw, 
+                                                X_test_raw, n)              # Choose the samples for scattering
     showScatter(X_plot_train, y_plot_train, 
                 X_plot_test, y_plot_test, 
-                "Result-PowerSpec-WTFPAD", acc, 1, n, max)
+                "Result-PowerSpec-DF", acc, 1, n, max)
     showScatter(X_plot_raw, y_plot_train, 
                 X_plot_rawtest, y_plot_test, 
-                "Result-Raw", 0.23, 2, n, max)
-    plt.show()
+                "Result-Raw", 0, 2, n, max)
+    plt.savefig("../result/scatter/WTF_PAD_exp.png")

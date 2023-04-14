@@ -27,6 +27,6 @@ if __name__ == '__main__':
     width = 50
     title = "DF-RGB"
     rgb(X_train, y_train, min, max, width, title)
-    plt.show()
+    plt.savefig("../reuslt/rgb/DF_exp.png")
 
    

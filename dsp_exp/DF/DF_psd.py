@@ -41,5 +41,5 @@ if __name__ == '__main__':
         if j == num:
             break
     plt.suptitle("Nodef-PSD (n=" + str(n) + ")")
-    plt.show()
+    plt.savefig("../result/psd/DF_exp.png")
    
