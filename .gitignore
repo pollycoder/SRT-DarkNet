@@ -135,7 +135,6 @@ dmypy.json
 *.npz
 *.pkl
 *.csv
-datasets/
 
 # results
 *.png
