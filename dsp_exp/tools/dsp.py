@@ -2,7 +2,8 @@ import numpy as np
 from tqdm import trange
 from scipy.signal import lfilter, butter, firwin
 from scipy.fftpack import fft, ifft
-from scipy.interpolate import interp1d
+from skopt import gp_minimize
+from functools import partial
 import datetime
 
 #########################################
@@ -15,9 +16,26 @@ import datetime
 #   combine: Window + Butter
 #########################################
 
+def adaptive_resample(timestamps, signal, fs):
+    interval = 1 / fs
+    signal_list = []
+    signal_list.append(signal[0])
+    for i in range(0, len(timestamps) - 1):
+        timestamp = timestamps[i]
+        while True:
+            signal_list.append(0)
+            timestamp += interval
+            if timestamp >= timestamps[i + 1]:
+                break
+        signal_list.append(signal[i + 1])
+    new_signal = np.array(signal_list)
+    return new_signal
+
+
 # Resampling the traces
 def resample(time, signal, resample_rate, cutoff_time):
     # Create a new time sequence, and find the ending time
+    # Remove the repeating timestamps
     index = 0
     repeat_list = []
     while True:
@@ -30,11 +48,10 @@ def resample(time, signal, resample_rate, cutoff_time):
     time = np.delete(time, repeat_list)
     signal = signal[0:index]
     signal = np.delete(signal, repeat_list)
-    new_time = np.arange(time[0], time[-1], 1.0 / resample_rate)
 
     # Interpolation for resampling
-    f = interp1d(time, signal, kind='zero')
-    new_signal = f(new_time)
+    new_signal = adaptive_resample(time, signal, fs=resample_rate)
+    
 
     # Padding or cutting the signal to make it have the length
     # Length = cutoff time * sampling rate
@@ -48,7 +65,7 @@ def resample(time, signal, resample_rate, cutoff_time):
 
 
 # Get power spectrum density
-def psd(X_matrix, filter='none'):
+def spectrum(X_matrix, filter='none', spec='ps-corr'):
     fft_list = []
 
     if filter == 'none':
@@ -65,8 +82,15 @@ def psd(X_matrix, filter='none'):
         print("Filterer: Window")
     elif filter == 'winb-low':
         print("Filterer: Window + Butter Lowpass")
+    elif filter == 'kalman':
+        print("Filterer: Kalman")
     else:
         print("Filterer: Unknown")
+
+    if spec == 'ps-corr':
+        print("Spectrum: Power Spectrum with Correlation")
+    elif spec == 'freq':
+        print("Spectrum: Frequency Spectrum")
 
     start = datetime.datetime.now()
     for i in trange(0, X_matrix.shape[0]):
@@ -87,7 +111,9 @@ def psd(X_matrix, filter='none'):
         elif filter == 'winb-low':
             window = np.hamming(len(signal))
             signal = window * signal
-            signal = butter_lowpass_filter(signal, cutoff_freq=30, fs=1000, order=5)
+            signal = butter_lowpass_filter(signal, cutoff_freq=10, fs=300, order=5)
+        elif filter == 'kalman':
+            signal = kalman_filter(signal)
         else:
             try:
                 print("Filter name error: The filterer doesn't exist !")
@@ -96,15 +122,19 @@ def psd(X_matrix, filter='none'):
         fft_res = np.fft.fft(signal)
         fft_res = abs(fft_res)[:len(fft_res)//2] / len(signal) * 2
 
-        corr = np.correlate(signal,signal,"same")
-        corr_fft = np.fft.fft(corr)
-        psd_corr_res = np.abs(corr_fft)[:len(fft_res)] / len(signal) * 2
-        fft_list_temp = psd_corr_res.tolist()
+        if spec == 'ps-corr':
+            corr = np.correlate(signal,signal,"same")
+            corr_fft = np.fft.fft(corr)
+            psd_corr_res = np.abs(corr_fft)[:len(fft_res)] / len(signal) * 2
+            fft_list_temp = psd_corr_res.tolist()
+        elif spec == 'freq':
+            fft_list_temp = fft_res
+
         fft_list.append(fft_list_temp)
     fft_list = np.array(fft_list)
     end = datetime.datetime.now()
     print("Succeed !", end=" ")
-    print('PSD generating time: ', (end - start).seconds, "s")
+    print('Spectrum generating time: ', (end - start).seconds, "s")
     return fft_list
 
 
@@ -152,3 +182,19 @@ def direct_lowpass_filter(signal, cutoff_freq, fs):
     signal_fft[freqs > cutoff_freq] = 0
     signal_filtered = np.real(ifft(signal_fft))
     return signal_filtered
+
+
+# Kalman filterer
+def kalman_filter(signal, Q=1E-4, R=1E-5):
+    x_hat = np.zeros(len(signal))   
+    P = np.zeros(len(signal))       
+    K = np.zeros(len(signal))       
+    x_hat[0] = signal[0]
+    P[0] = 1.0
+    for k in range(1, len(signal)):
+        x_hat[k] = x_hat[k-1]
+        P[k] = P[k-1] + Q
+        K[k] = P[k] / (P[k] + R)
+        x_hat[k] = x_hat[k] + K[k] * (signal[k] - x_hat[k])
+        P[k] = (1 - K[k]) * P[k]      
+    return x_hat

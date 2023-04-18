@@ -42,41 +42,5 @@ if __name__ == '__main__':
     print('Feature extracting time: ', (end - start).seconds, "s")
     print("======================================")
 
+    # Testing
     y_pred, acc = DNN(fft_list_train, y_train, fft_list_test, y_test)
-
-    # Loading data
-    print("Start direction-only experiment...")
-    X_train, y_train, X_test, y_test = data_direction(prop=0.1, db_name="Front")
-    
-    # Processing data
-    print("======================================")
-    print("Start processing training data:")
-    start = datetime.datetime.now()
-    fft_list_train = X_train                          # Change the filterer
-    print("Start processing testing data")
-    fft_list_test = X_test                            # Change the filterer
-    end = datetime.datetime.now()
-    print('Feature extracting time: ', (end - start).seconds, "s")
-    print("======================================")
-
-    y_pred, acc = DNN(fft_list_train, y_train, fft_list_test, y_test)
-    
-    
-    
-    # Scattering
-    n = 10                                                                  # Classes going to plot
-    max = 80                                                                # Range of the axis
-    X_plot_train, y_plot_train, \
-    X_plot_test, y_plot_test,   \
-    X_plot_raw, X_plot_rawtest = sample_scatter(fft_list_train, 
-                                                y_train, fft_list_test, 
-                                                y_test, y_pred, 
-                                                X_train, 
-                                                X_test, n)              # Choose the samples for scattering
-    showScatter(X_plot_train, y_plot_train, 
-                X_plot_test, y_plot_test, 
-                "Result-PowerSpec-DF", acc, 1, n, max)
-    showScatter(X_plot_raw, y_plot_train, 
-                X_plot_rawtest, y_plot_test, 
-                "Result-Raw", 0.23, 2, n, max)
-    plt.savefig("../result/scatter/Front_raw_exp.png")

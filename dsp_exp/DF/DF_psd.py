@@ -1,7 +1,7 @@
 import sys
 sys.path.append("../")
 from tools.data_loading import data_processing
-from tools.dsp import psd
+from tools.dsp import spectrum
 import matplotlib.pyplot as plt
 import numpy as np
 from multiprocessing import cpu_count
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     print("CPU cores:", cores)
 
     X_train, y_train, X_test, y_test = data_processing(prop=0.1, db_name="DF")
-    X_train = psd(X_train, filter='butter-low')
+    X_train = spectrum(X_train, filter='butter-low')
 
 
     # Plot

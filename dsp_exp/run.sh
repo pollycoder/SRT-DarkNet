@@ -13,10 +13,10 @@ mkdir result/rgb
 mkdir result/psd
 cd DF
 nohup python -u DF_exp.py > ../result/log/DF_exp.log 2>&1 &
-nohup python -u DF_raw_exp.py > ../result/log/DF_raw_exp.log 2>&1 &
+#python -u DF_raw_exp.py > ../result/log/DF_raw_exp.log 2>&1 &
 cd ../WTF_PAD
-nohup python -u WTF_PAD_raw_exp.py > ../result/log/WTF_PAD_raw_exp.log 2>&1 &
+#python -u WTF_PAD_raw_exp.py > ../result/log/WTF_PAD_raw_exp.log 2>&1 &
 nohup python -u WTF_PAD_exp.py > ../result/log/WTF_PAD_exp.log 2>&1 &
 cd ../Front
-nohup python -u Front_raw_exp.py > ../result/log/Front_raw_exp.log 2>&1 &
+#python -u Front_raw_exp.py > ../result/log/Front_raw_exp.log 2>&1 &
 nohup python -u Front_exp.py > ../result/log/Front_exp.log 2>&1 &
