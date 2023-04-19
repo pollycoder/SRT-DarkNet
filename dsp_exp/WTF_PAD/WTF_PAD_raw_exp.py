@@ -6,13 +6,13 @@ from tools.classifiers import DNN
 import datetime
 from multiprocessing import cpu_count
 
-##########################################
-# Experiment for frequency domain analysis
-# Script for experiment - WTF-PAD
-# Classifier: MLP
-# DSP: filterers - none, butter, gaussian
-# Output: accuracy
-##########################################
+'''
+Experiment for non-frequency domain analysis
+Script for experiment - WTF-PAD
+Classifier: MLP
+DSP: filterers - none, butter, gaussian
+Output: accuracy
+'''
 
 fs = 1000
 cutoff_freq = 30
