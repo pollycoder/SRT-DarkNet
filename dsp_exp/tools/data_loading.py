@@ -6,17 +6,16 @@ from tools.dsp import resample
 
 dataset_dir = "../../defense_datasets/"
 
-############################################
-# Data loading module
-# WTF-PAD, Front, DF
-# Loading the datasets and resample the data
-############################################
-
+'''
+Data loading module
+ Datasets: WTF-PAD, Front, DF
+ Loading the datasets
+'''
 
 # Loading dataset
+# Timestamps and directions
 def data_processing(prop, db_name):
     start = datetime.datetime.now()
-    print("========================================")
     print("Process the dataset and resample it")
     time, direction, label = data_loading(db_name)
     print("-----------------------------------------")
@@ -43,9 +42,10 @@ def data_processing(prop, db_name):
     return X_train, y_train, X_test, y_test
 
 
+# Loading dataset
+# Only directions
 def data_direction(prop, db_name):
     start = datetime.datetime.now()
-    print("========================================")
     print("Process the dataset")
     time, direction, label = data_loading(db_name)
     print("-----------------------------------------")
@@ -54,9 +54,12 @@ def data_direction(prop, db_name):
     y_train = label[0:sample_num]
     X_test = direction[sample_num:-1,:]
     y_test = label[sample_num:-1]
+    end = datetime.datetime.now()
+    print('Total data processing time: ', (end - start).seconds, "s")
     return X_train, y_train, X_test, y_test
 
 
+# Loading dataset
 def data_loading(dataset):
     start = datetime.datetime.now()
     print("Loading datasets")

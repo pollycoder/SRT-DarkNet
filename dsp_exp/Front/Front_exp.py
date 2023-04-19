@@ -1,11 +1,8 @@
 import sys
 sys.path.append("../")
-
-from tools.data_loading import data_processing, data_direction
-from tools.plotting import showScatter, sample_scatter
+from tools.data_loading import data_processing
 from tools.dsp import spectrum
 from tools.classifiers import DNN
-import matplotlib.pyplot as plt
 import datetime
 from multiprocessing import cpu_count
 
@@ -14,7 +11,7 @@ from multiprocessing import cpu_count
 # Script for experiment - Front
 # Classifier: MLP
 # DSP: filterers - none, butter, gaussian
-# Output: accuracy and scatter plot
+# Output: accuracy
 ##########################################
 
 fs = 1000

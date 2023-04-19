@@ -2,20 +2,21 @@ import numpy as np
 from tqdm import trange
 from scipy.signal import lfilter, butter, firwin
 from scipy.fftpack import fft, ifft
-from skopt import gp_minimize
-from functools import partial
 import datetime
 
-#########################################
-# Digital signals processing module
-# Resampling: fill in loads of 0-s
-# PSD: Get the power spectrum of the trace
-# Filterers: 
-#   low-pass - gaussian + butter
-#   high-pass - butter
-#   combine: Window + Butter
-#########################################
+'''
+Digital signals processing module
+    1. Resampling: fill in loads of 0-s
+    2. Spectrums: Get the power spectrum of the trace
+    3. Filter: filt the signals
+'''
 
+#####################################################################
+# Resampling the signals
+# Method: insert zeros into the  array to recover the original signal
+#####################################################################
+
+# Insert seros
 def adaptive_resample(timestamps, signal, fs):
     interval = 1 / fs
     signal_list = []
@@ -31,8 +32,6 @@ def adaptive_resample(timestamps, signal, fs):
     new_signal = np.array(signal_list)
     return new_signal
 
-
-# Resampling the traces
 def resample(time, signal, resample_rate, cutoff_time):
     # Create a new time sequence, and find the ending time
     # Remove the repeating timestamps
@@ -63,8 +62,12 @@ def resample(time, signal, resample_rate, cutoff_time):
         new_signal = new_signal[0:length]
     return new_signal
 
-
-# Get power spectrum density
+##########################################
+# Get different spectrums for analysis
+# Spectrums:
+#   Frequency spectrum
+#   Power spectrum
+##########################################
 def spectrum(X_matrix, filter='none', spec='ps-corr'):
     fft_list = []
 
@@ -137,8 +140,15 @@ def spectrum(X_matrix, filter='none', spec='ps-corr'):
     print('Spectrum generating time: ', (end - start).seconds, "s")
     return fft_list
 
+######################################
+# Filters:
+# Butterworth - lowpass, highpass
+# Gaussian - lowpass
+# Directly cutting - low
+# Kalman
+######################################
 
-# Butter Filterer - lowpass
+# Butter Filter - lowpass
 def butter_lowpass(cutoff, fs, order=5):
     nyq = 0.5 * fs
     normal_cutoff = cutoff / nyq
@@ -151,7 +161,7 @@ def butter_lowpass_filter(data, cutoff_freq, fs, order=5):
     return y
 
 
-# Gaussian Filterer
+# Gaussian Filter
 def gaussian_lowpass_filter(signal, sample_rate, cutoff_freq, std):
     nyquist_freq = 0.5 * sample_rate
     normalized_cutoff_freq = cutoff_freq / nyquist_freq
@@ -161,7 +171,7 @@ def gaussian_lowpass_filter(signal, sample_rate, cutoff_freq, std):
     return filtered_signal
 
 
-# Butter Filterer - highpass
+# Butter Filter - highpass
 def butter_highpass(cutoff, fs, order=5):
     nyq = 0.5 * fs
     normal_cutoff = cutoff / nyq
@@ -174,7 +184,7 @@ def butter_highpass_filter(data, cutoff_freq, fs, order=5):
     return y
 
 
-# Cutting filterer - lowpass
+# Cutting filter - lowpass
 # Directly cut off high
 def direct_lowpass_filter(signal, cutoff_freq, fs):
     signal_fft = fft(signal)
@@ -184,7 +194,7 @@ def direct_lowpass_filter(signal, cutoff_freq, fs):
     return signal_filtered
 
 
-# Kalman filterer
+# Kalman filter
 def kalman_filter(signal, Q=1E-4, R=1E-5):
     x_hat = np.zeros(len(signal))   
     P = np.zeros(len(signal))       
