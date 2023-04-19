@@ -14,7 +14,6 @@ DSP: filterers - none, butter, gaussian
 Output: accuracy
 '''
 
-
 fs = 250
 cutoff_freq = 30
 order = 5
