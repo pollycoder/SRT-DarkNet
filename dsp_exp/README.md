@@ -45,7 +45,7 @@ The files are listed below:
 - All the scripts for experiments are saved in `/DF`, `/Front`, `WTF_PAD`, the folder names correspond to the name of the datasets.
 - The results will be saved in `/result`. If you need to save the result, you can just run:
 
-```shell
+```console
 mkdir result
 nohup python -u PyFileName.py > ../result/ResultName.log 2>&1 &
 ```
@@ -54,7 +54,7 @@ You must replace `PyFileName` and `ResultName` as the real file name.
 
 - If you want to complete the experiments in parallel, you can just run `run.sh`:
 
-```
+```console
 cd ${REPO_PATH}/dsp_exp
 ./run.sh
 ```
