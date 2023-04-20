@@ -25,7 +25,6 @@ if __name__ == '__main__':
     print("--------------------------------------")
 
     # Loading data
-    start = datetime.datetime.now()
     X_train, y_train, X_test, y_test, X_valid, y_valid = dataset(db_name="DF")
 
     # Testing

@@ -1,23 +1,53 @@
 # Traffic Analysis through DSP
 
-## File Structure
+This repository is mainly for traffic analysis through digital signals processing methods.
 
-The directories for experiments include `/nodef`, `/wtfpad`, `/wt`, which correspond to experiments upon no-defense traffic, WTF-PAD-defensed traffic, and Walkie-Talkie-defensed traffic.
+## Requirements
 
-For each experiment directory, we have 5 python files having different jobs to do:
+
+
+## File structure
+
+The files are listed below:
 
 ```console
-xxx_exp.py				Main experiment, it will output the result
-xxx_raw_exp.py		Main experiment upon non-processed traffic
-xxx_psd.py				Drawing PSD figure
-xxx_rgb.py				Drawing RGB figure for all websites
-xxx_rgb_single.py	Drawing RGB figure for single website
+.
+├── DF
+├── Front
+├── README.md
+├── WTF_PAD
+├── result
+├── run.sh
+└── tools
 ```
 
-|Files            |Job                                        |
-|-----------------|-------------------------------------------|
-|xxx_exp.py       |Main experiment, it will output the result |
-|xxx_raw_exp.py   |Main experiment upon non-processed traffic |
-|xxx_psd.py       |Drawing PSD figure                         |
-|xxx_rgb.py       |Drawing RGB figure for all websites        |
-|xxx_rgb_single.py|Drawing RGB figure for single website      |
+- All the scripts for experiments are saved in `/DF`, `/Front`, `WTF_PAD`, the folder names correspond to the name of the datasets.
+- The results will be saved in `/result`. If you need to save the result, you can just run:
+
+```shell
+nohup python -u PyFileName.py > ResultName.log 2>&1 &
+```
+
+You must replace `PyFileName` and `ResultName` as the real file name.
+
+- If you want to complete the experiments in parallel, you can just run `run.sh`:
+
+```
+cd ${REPO_PATH}/dsp_exp
+./run.sh
+```
+
+All the results will be written into `/result`. The results are named as the name of corresponding experimental script.
+
+- If you want to do further experiments with different datasets and DSP tools, you can go to `/tools` whose APIs will be explained in detail in the following part.
+
+## Tools
+
+`Tools` is the core module of the experiment. It contains all the utilities necessary, including `data_loading` module, `dsp` module, `classifiers` module and `plotting` module. The modules and their major jobs are listed below:
+
+| Module       | Job                                                          |
+| ------------ | ------------------------------------------------------------ |
+| data_loading | Loading and processing datasets.<br>You can tune the parameters to get the type of data you want. |
+| dsp          | Processing the signals (traffic).<br>You can tune the parameters to process the signals in different ways. |
+| classifiers  | Completing classification tasks.<br>The classfiers include k-NN, random forest, multilayer perception and linear regression. |
+| plotting     | Visualizing the data.<br>You can choose scatter diagram and rgb diagram. (spectrum diagram part is incomplete) |

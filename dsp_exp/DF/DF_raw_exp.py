@@ -23,8 +23,8 @@ if __name__ == '__main__':
     print("CPU cores:", cores)
 
     # Loading data
-    print("Start full-data experiment...")
-    X_train, y_train, X_test, y_test, X_valid, y_valid = dataset(db_name="DF", spec='none', filter='none')
+    X_train, y_train, X_test, y_test, X_valid, y_valid = \
+    dataset(db_name="DF", spec='none', filter='none')
 
     # Testing
     y_pred, acc = DNN(X_train, y_train, X_test, y_test)

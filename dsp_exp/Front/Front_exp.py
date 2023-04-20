@@ -25,8 +25,7 @@ if __name__ == '__main__':
     print("CPU cores:", cores)
 
     # Loading data
-    start = datetime.datetime.now()
-    X_train, y_train, X_test, y_test = dataset(db_name="Front")
+    X_train, y_train, X_test, y_test, X_valid, y_valid = dataset(db_name="Front")
 
     # Testing
     y_pred, acc = DNN(X_train, y_train, X_test, y_test)

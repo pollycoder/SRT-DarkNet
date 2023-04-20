@@ -1,8 +1,7 @@
 import sys
 sys.path.append("../")
-from tools.data_loading import data_processing
+from tools.data_loading import dataset
 from tools.plotting import rgb
-from tools.dsp import psd
 from multiprocessing import cpu_count
 import matplotlib.pyplot as plt
 
@@ -18,8 +17,8 @@ if __name__ == '__main__':
     cores = cpu_count()
     print("CPU cores:", cores)
 
-    X_train, y_train, X_test, y_test = data_processing(prop=0.1, db_name="WTF_PAD")
-    X_train = X_train = psd(X_train, filter='butter')
+    # Loading data
+    X_train, y_train, X_test, y_test, X_valid, y_valid = dataset(db_name="WTF_PAD")
     
 
     min = 10
