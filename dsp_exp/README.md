@@ -73,7 +73,7 @@ All the results will be written into `/result`. The results are named as the nam
 | classifiers  | Completing classification tasks.<br>The classfiers include k-NN, random forest, multilayer perception and linear regression. |
 | plotting     | Visualizing the data.<br>You can choose scatter diagram and rgb diagram. (spectrum diagram part is incomplete) |
 
-the APIs of these modules are explained in detail in the following. Before using them please make sure 
+the APIs of these modules are explained in detail in the following. 
 
 ### Data Loading Module
 
