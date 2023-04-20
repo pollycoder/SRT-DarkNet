@@ -14,7 +14,7 @@ sklearn
 
 If you are one of the users of our lab server, you can just run:
 
-```shell
+```console
 conda activate zysrt39
 ```
 
