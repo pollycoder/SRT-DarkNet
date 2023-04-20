@@ -6,11 +6,11 @@ from tqdm import trange
 import numpy as np
 import random
 
-######################
-# Scattering module
-# Scatter
-# RGBs
-######################
+'''
+Scattering module
+    Scatter
+    RGB - all-pages, single page
+'''
 
 # Sample choosing and plotting
 def sample_scatter(X_train, y_train, X_test, y_test, y_pred, X_train_raw, X_test_raw, n):

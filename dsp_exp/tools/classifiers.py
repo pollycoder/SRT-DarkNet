@@ -5,8 +5,15 @@ from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
-
 import datetime
+
+'''
+APIs for differnet classifiers
+    K-NN
+    Random forest
+    DNN - MLP
+    Linear regression
+'''
 
 
 # KNN
