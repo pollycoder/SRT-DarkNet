@@ -113,3 +113,7 @@ X_train, y_train, X_test, y_test, X_valid, y_valid \
           db_name="WTF_PAD", type="td", 
           spec="freq", filter="gaussian")
 ```
+
+> Caution:
+> 1. prop_test + prop_valid < 1
+> 1. If you choose the data considering time features, the sampling rate is set as 250Hz and the cutting off timestamp is 20s, which means only the packets captured within 20s will be included in the output dataset.
