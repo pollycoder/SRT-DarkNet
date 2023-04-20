@@ -1,6 +1,6 @@
 import sys
 sys.path.append("../")
-from tools.data_loading import data_processing
+from tools.data_loading import dataset
 from tools.classifiers import DNN
 import datetime
 from multiprocessing import cpu_count
@@ -24,18 +24,7 @@ if __name__ == '__main__':
 
     # Loading data
     print("Start full-data experiment...")
-    X_train, y_train, X_test, y_test = data_processing(prop=0.1, db_name="DF")
-    
-    # Processing data
-    print("======================================")
-    print("Start processing training data:")
-    start = datetime.datetime.now()
-    fft_list_train = X_train                          # Change the filterer
-    print("Start processing testing data")
-    fft_list_test = X_test                            # Change the filterer
-    end = datetime.datetime.now()
-    print('Feature extracting time: ', (end - start).seconds, "s")
-    print("======================================")
+    X_train, y_train, X_test, y_test, X_valid, y_valid = dataset(db_name="DF", spec='none', filter='none')
 
     # Testing
-    y_pred, acc = DNN(fft_list_train, y_train, fft_list_test, y_test)
+    y_pred, acc = DNN(X_train, y_train, X_test, y_test)

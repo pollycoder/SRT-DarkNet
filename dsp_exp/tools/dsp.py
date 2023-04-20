@@ -94,6 +94,13 @@ def spectrum(X_matrix, filter='none', spec='ps-corr'):
         print("Spectrum: Power Spectrum with Correlation")
     elif spec == 'freq':
         print("Spectrum: Frequency Spectrum")
+    elif spec == 'none':
+        print("Spectrum: None")
+    else:
+        print("Type ERROR: The input is incorrect ! It should be:\n \
+              'ps-corr': Power spectrum\n \
+              'freq': Frequency spectrum\n \
+              'none': no spectrum\n")
 
     start = datetime.datetime.now()
     for i in trange(0, X_matrix.shape[0]):

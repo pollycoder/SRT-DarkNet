@@ -58,15 +58,14 @@ def RF(X_train, y_train, X_test, y_test):
 
 def DNN(X_train, y_train, X_test, y_test):
     print("Start training (MLP)")
-    # 定义MLP分类器
+    
     start = datetime.datetime.now()
-    mlp = MLPClassifier(max_iter=1000, hidden_layer_sizes=(200,200), early_stopping=True, verbose=True,random_state=420)
+    mlp = MLPClassifier(max_iter=1000, hidden_layer_sizes=(200,200), early_stopping=True, verbose=True,random_state=420,)
     mlp.fit(X_train, y_train)
     end = datetime.datetime.now()
     print("Training succeeded !")
     print('Training time: ', (end - start).seconds, "s")
 
-    # 在测试集上评估性能
     print("Now start testing...")
     start = datetime.datetime.now()
     acc = mlp.score(X_test, y_test)
