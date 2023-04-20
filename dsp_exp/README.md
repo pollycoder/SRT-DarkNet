@@ -46,7 +46,8 @@ The files are listed below:
 - The results will be saved in `/result`. If you need to save the result, you can just run:
 
 ```shell
-nohup python -u PyFileName.py > ResultName.log 2>&1 &
+mkdir result
+nohup python -u PyFileName.py > ../result/ResultName.log 2>&1 &
 ```
 
 You must replace `PyFileName` and `ResultName` as the real file name.
