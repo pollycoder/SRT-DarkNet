@@ -101,6 +101,7 @@ def spectrum(X_matrix, filter='none', spec='ps-corr'):
               'ps-corr': Power spectrum\n \
               'freq': Frequency spectrum\n \
               'none': no spectrum\n")
+        return
 
     start = datetime.datetime.now()
     for i in trange(0, X_matrix.shape[0]):
@@ -139,6 +140,8 @@ def spectrum(X_matrix, filter='none', spec='ps-corr'):
             fft_list_temp = psd_corr_res.tolist()
         elif spec == 'freq':
             fft_list_temp = fft_res
+        elif spec == 'none':
+            fft_list_temp = signal
 
         fft_list.append(fft_list_temp)
     fft_list = np.array(fft_list)
