@@ -11,6 +11,82 @@ Digital signals processing module
     3. Filter: filt the signals
 '''
 
+##########################################
+# Get different spectrums for analysis
+# Spectrums:
+#   Frequency spectrum
+#   Power spectrum
+##########################################
+def spectrum_display(filter, spec):
+    if filter == 'none':
+        print("Filterer: None")
+    elif filter == 'direct':
+        print("Filterer: Direct Lowpass")
+    elif filter == 'gaussian':
+        print("Filterer: Gaussian Lowpass")
+    elif filter == 'butter-low':
+        print("Filterer: Butter Lowpass")
+    elif filter == 'butter-high':
+        print("Filterer: Butter Highpass")
+    elif filter == 'window':
+        print("Filterer: Window")
+    elif filter == 'winb-low':
+        print("Filterer: Window + Butter Lowpass")
+    elif filter == 'kalman':
+        print("Filterer: Kalman")
+    else:
+        print("Filterer: Unknown")
+
+    if spec == 'ps-corr':
+        print("Spectrum: Power Spectrum with Correlation")
+    elif spec == 'freq':
+        print("Spectrum: Frequency Spectrum")
+    elif spec == 'none':
+        print("Spectrum: None")
+    else:
+        print("Type ERROR: The input is incorrect ! It should be:\n \
+              'ps-corr': Power spectrum\n \
+              'freq': Frequency spectrum\n \
+              'none': no spectrum\n")
+        return
+
+def freq_spec(signal):
+    signal = np.fft.fft(signal)
+    signal = abs(signal)[:len(signal)//2] / len(signal) * 2
+    return signal
+
+def power_corr_spec(signal):
+    fft_res = np.fft.fft(signal)  # 傅里叶变换
+    fft_res = abs(fft_res)[:len(fft_res)//2] / len(signal) * 2
+    corr = np.correlate(signal,signal,"same")
+    corr_fft = np.fft.fft(corr)
+    psd_corr_res = np.abs(corr_fft)[:len(fft_res)] / len(signal) * 2
+    return psd_corr_res
+
+def spectrum(X_matrix, filter='none', spec='ps-corr'):
+    fft_list = []
+    spectrum_display(filter=filter, spec=spec)
+    start = datetime.datetime.now()
+    for i in trange(0, X_matrix.shape[0]):
+        signal = X_matrix[i,:]   
+        signal = signal_filter(filter=filter, signal=signal)
+
+        if spec == 'ps-corr':
+            signal = power_corr_spec(signal)
+            signal = signal.tolist()
+        elif spec == 'freq':
+            signal = freq_spec(signal)
+            signal = signal.tolist()
+        elif spec == 'none':
+            signal = signal
+        fft_list.append(signal)
+    fft_list = np.array(fft_list)
+    end = datetime.datetime.now()
+    print("Succeed !", end=" ")
+    print('Spectrum generating time: ', (end - start).seconds, "s")
+    return fft_list
+
+
 #####################################################################
 # Resampling the signals
 # Method: insert zeros into the  array to recover the original signal
@@ -62,93 +138,6 @@ def resample(time, signal, resample_rate, cutoff_time):
         new_signal = new_signal[0:length]
     return new_signal
 
-##########################################
-# Get different spectrums for analysis
-# Spectrums:
-#   Frequency spectrum
-#   Power spectrum
-##########################################
-def spectrum(X_matrix, filter='none', spec='ps-corr'):
-    fft_list = []
-
-    if filter == 'none':
-        print("Filterer: None")
-    elif filter == 'direct':
-        print("Filterer: Direct Lowpass")
-    elif filter == 'gaussian':
-        print("Filterer: Gaussian Lowpass")
-    elif filter == 'butter-low':
-        print("Filterer: Butter Lowpass")
-    elif filter == 'butter-high':
-        print("Filterer: Butter Highpass")
-    elif filter == 'window':
-        print("Filterer: Window")
-    elif filter == 'winb-low':
-        print("Filterer: Window + Butter Lowpass")
-    elif filter == 'kalman':
-        print("Filterer: Kalman")
-    else:
-        print("Filterer: Unknown")
-
-    if spec == 'ps-corr':
-        print("Spectrum: Power Spectrum with Correlation")
-    elif spec == 'freq':
-        print("Spectrum: Frequency Spectrum")
-    elif spec == 'none':
-        print("Spectrum: None")
-    else:
-        print("Type ERROR: The input is incorrect ! It should be:\n \
-              'ps-corr': Power spectrum\n \
-              'freq': Frequency spectrum\n \
-              'none': no spectrum\n")
-        return
-
-    start = datetime.datetime.now()
-    for i in trange(0, X_matrix.shape[0]):
-        signal = X_matrix[i,:]
-        if filter == 'none':
-            signal = X_matrix[i,:]
-        elif filter == 'direct':
-            signal = direct_lowpass_filter(signal, cutoff_freq=30, fs=1000)
-        elif filter == 'gaussian':
-            signal = gaussian_lowpass_filter(signal, sample_rate=1000, cutoff_freq=30, std=5)
-        elif filter == 'butter-low':
-            signal = butter_lowpass_filter(signal, cutoff_freq=30, fs=1000, order=5)
-        elif filter == 'butter-high':
-            signal = butter_highpass_filter(signal, cutoff_freq=30, fs=1000, order=5)
-        elif filter == 'window':
-            window = np.hamming(len(signal))
-            signal = window * signal
-        elif filter == 'winb-low':
-            window = np.hamming(len(signal))
-            signal = window * signal
-            signal = butter_lowpass_filter(signal, cutoff_freq=10, fs=300, order=5)
-        elif filter == 'kalman':
-            signal = kalman_filter(signal)
-        else:
-            try:
-                print("Filter name error: The filterer doesn't exist !")
-            except ValueError:
-                print("Filter name should be 'str' type")
-        fft_res = np.fft.fft(signal)
-        fft_res = abs(fft_res)[:len(fft_res)//2] / len(signal) * 2
-
-        if spec == 'ps-corr':
-            corr = np.correlate(signal,signal,"same")
-            corr_fft = np.fft.fft(corr)
-            psd_corr_res = np.abs(corr_fft)[:len(fft_res)] / len(signal) * 2
-            fft_list_temp = psd_corr_res.tolist()
-        elif spec == 'freq':
-            fft_list_temp = fft_res
-        elif spec == 'none':
-            fft_list_temp = signal
-
-        fft_list.append(fft_list_temp)
-    fft_list = np.array(fft_list)
-    end = datetime.datetime.now()
-    print("Succeed !", end=" ")
-    print('Spectrum generating time: ', (end - start).seconds, "s")
-    return fft_list
 
 ######################################
 # Filters:
@@ -157,6 +146,33 @@ def spectrum(X_matrix, filter='none', spec='ps-corr'):
 # Directly cutting - low
 # Kalman
 ######################################
+
+def signal_filter(filter, signal):
+    if filter == 'none':
+        signal = signal
+    elif filter == 'direct':
+        signal = direct_lowpass_filter(signal, cutoff_freq=30, fs=1000)
+    elif filter == 'gaussian':
+        signal = gaussian_lowpass_filter(signal, sample_rate=1000, cutoff_freq=30, std=5)
+    elif filter == 'butter-low':
+        signal = butter_lowpass_filter(signal, cutoff_freq=30, fs=1000, order=5)
+    elif filter == 'butter-high':
+        signal = butter_highpass_filter(signal, cutoff_freq=30, fs=1000, order=5)
+    elif filter == 'window':
+        window = np.hamming(len(signal))
+        signal = window * signal
+    elif filter == 'winb-low':
+        window = np.hamming(len(signal))
+        signal = window * signal
+        signal = butter_lowpass_filter(signal, cutoff_freq=10, fs=300, order=5)
+    elif filter == 'kalman':
+        signal = kalman_filter(signal)
+    else:
+        try:
+            print("Filter name error: The filterer doesn't exist !")
+        except ValueError:
+            print("Filter name should be 'str' type")
+    return signal
 
 # Butter Filter - lowpass
 def butter_lowpass(cutoff, fs, order=5):

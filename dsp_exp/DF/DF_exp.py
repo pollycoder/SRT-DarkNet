@@ -5,6 +5,7 @@ from tools.dsp import spectrum
 from tools.classifiers import DNN
 import datetime
 from multiprocessing import cpu_count
+import numpy as np
 
 '''
 Experiment for frequency domain analysis
@@ -14,19 +15,58 @@ DSP: filterers - none, butter, gaussian
 Output: accuracy
 '''
 
-fs = 250
-cutoff_freq = 30
-order = 5
+db_name = "DF"
+print("Training and testing for traces - {}".format(db_name))
+cores = cpu_count()
+print("CPU cores:", cores)
+print("--------------------------------------")
 
-if __name__ == '__main__':  
-    print("PSD Training and testing for traces - DF")
-    cores = cpu_count()
-    print("CPU cores:", cores)
-    print("--------------------------------------")
 
-    # Loading data
-    X_train, y_train, X_test, y_test, X_valid, y_valid = dataset(db_name="DF")
+# Raw test
+# Loading data
+data_dir = "../npz/"
+data_X = np.load(data_dir + db_name + "_X_raw.npz")
+data_y = np.load(data_dir + db_name + "_y.npz")
+train_X = data_X["train"]
+test_X = data_X["test"]
+train_y = data_y["train"]
+test_y = data_y["test"]
 
-    # Testing
-    y_pred, acc = DNN(X_train, y_train, X_test, y_test)
-    print("--------------------------------------")
+# Testing
+print("Testing - Raw {}".format(db_name))
+y_pred, acc = DNN(train_X, train_y, test_X, test_y)
+print("--------------------------------------")
+
+
+# Freq test
+# Loading data
+data_dir = "../npz/"
+data_X = np.load(data_dir + db_name + "_X_freq.npz")
+data_y = np.load(data_dir + db_name + "_y.npz")
+train_X = data_X["train"]
+test_X = data_X["test"]
+train_y = data_y["train"]
+test_y = data_y["test"]
+
+# Testing
+print("Testing - Frequency {}".format(db_name))
+y_pred, acc = DNN(train_X, train_y, test_X, test_y)
+print("--------------------------------------")
+
+
+# PSD test
+# Loading data
+data_dir = "../npz/"
+data_X = np.load(data_dir + db_name + "_X_freq.npz")
+data_y = np.load(data_dir + db_name + "_y.npz")
+train_X = data_X["train"]
+test_X = data_X["test"]
+train_y = data_y["train"]
+test_y = data_y["test"]
+
+# Testing
+print("Testing - Power {}".format(db_name))
+y_pred, acc = DNN(train_X, train_y, test_X, test_y)
+print("--------------------------------------")
+print("All tests finished ! >>>>>>>>>>>>>>>>>>>>>")
+    

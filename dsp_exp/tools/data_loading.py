@@ -4,7 +4,6 @@ import datetime
 from tqdm import trange
 from tools.dsp import resample
 from tools.dsp import spectrum
-
 dataset_dir = "../../defense_datasets/"
 
 '''
@@ -58,7 +57,7 @@ def data_processing(prop_test=0.1, prop_valid=0.2, db_name="DF"):
         signal = direction[i,:]
         timestamps = time[i,:]
         signal = resample(timestamps, signal, 
-                          resample_rate=250, 
+                          resample_rate=500, 
                           cutoff_time=20)
         signal = signal.tolist()
         signal_set.append(signal)
