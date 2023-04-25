@@ -67,5 +67,4 @@ test_y = data_y["test"]
 # Testing
 print("Testing - Power {}".format(db_name))
 y_pred, acc = DNN(train_X, train_y, test_X, test_y)
-print("--------------------------------------")
-print("All tests finished ! >>>>>>>>>>>>>>>>>>>>>")
+print("{}: All tests finished ! ".format(db_name))

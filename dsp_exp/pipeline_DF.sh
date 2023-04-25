@@ -11,11 +11,15 @@ mkdir result/log
 cd tools
 python data_pipeline.py
 
-cd ../DF
-nohup python DF_exp.py > ../result/log/DF_mlp.log 2>&1 &
+# Training
+cd ../DF_exp
+python -u train.py
+python -u train.py -s freq
+python -u train.py -s ps
 
-cd ../WTF_PAD
-nohup python WTF_PAD_exp.py > ../result/log/WTF_PAD_mlp.log 2>&1 &
+# Testing
+python -u test.py
+python -u test.py -s freq
+python -u test.py -s ps
 
-cd ../Front
-nohup python Front_exp.py > ../result/log/Front_mlp.log 2>&1 &
+

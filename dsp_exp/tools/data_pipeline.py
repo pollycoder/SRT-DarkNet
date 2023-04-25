@@ -3,9 +3,12 @@ sys.path.append("../")
 from data_loading import dataset
 from dsp import spectrum
 import numpy as np
+import argparse
 
 data_dir = "../npz/"
 dataset_dir = "../../defense_datasets/"
+parser = argparse.ArgumentParser(description='Dataset loading')
+parser.add_argument("-d", '--dataset', default="DF", type=str, help='Dataset name')
 
 def data_saving(db_name):
     X_train, y_train, X_test, y_test, X_valid, y_valid = \
@@ -27,10 +30,10 @@ def data_saving(db_name):
     np.savez(data_dir + "{}_X_ps".format(db_name), 
             train=X_train_f, test=X_test_f, valid=X_valid_f)
     
-
-data_saving("DF")
-data_saving("WTF_PAD")
-data_saving("Front")
+args = parser.parse_args()
+db_name = args.dataset
+data_saving(db_name)
+print("===================================")
 
 
 

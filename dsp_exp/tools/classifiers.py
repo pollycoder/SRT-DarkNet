@@ -69,7 +69,7 @@ def DNN(X_train, y_train, X_test, y_test):
     print("Now start testing...")
     start = datetime.datetime.now()
     acc = mlp.score(X_test, y_test)
-    print("Acc={:.2f}".format(acc))
+    print("Acc = ", acc)
     y_pred = mlp.predict(X_test)
     end = datetime.datetime.now()
     print('Testing time: ', (end - start).seconds, "s")

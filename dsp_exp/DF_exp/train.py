@@ -19,12 +19,10 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s.%(msecs)03d %(levelname)s: %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 warnings.filterwarnings('ignore')
 
-#* My code
 import sys
 sys.path.append("../")
-from tools.data_loading import dataset
 from tools.DF import DF
-#* My code ends here
+
 
 parser = argparse.ArgumentParser(description='Implementation of DF')
 parser.add_argument("-g", '--gpu', default=0, type=int, help='Device id')
@@ -32,6 +30,7 @@ parser.add_argument("-d", '--dataset', default="DF", type=str, help='dataset nam
 parser.add_argument("-l", '--length', default=5000, type=int, help='length of features')
 parser.add_argument("-t", '--type', default="df", type=str, help='df of tiktok')
 parser.add_argument("-e", '--enhance', default="F", type=str, help='enhance or not')
+parser.add_argument("-s", '--spectrum', default="none", type=str, help='spectrum used for training, freq, ps or none')
 
 
 args = parser.parse_args()
@@ -46,18 +45,7 @@ dataset_name = args.dataset
 batch_size = 256
 learning_rate = 0.002
 num_epoch = 30
-#! Senior fellow's code
-'''
-in_path = f"/data/users/dengxinhao/research/early_wf_attack/datasets/processed/{dataset_name}/pre_attack" # 实验packet
-if is_enhance == "F":
-    train_path = os.path.join(in_path, f"train.npz")
-else:
-    train_path = os.path.join(in_path, f"enhanced_train.npz")
-valid_path = os.path.join(in_path, f"valid.npz")
-networks_path = f'/data/users/dengxinhao/research/early_wf_attack/datasets/processed/{dataset_name}/networks'
-os.makedirs(networks_path, exist_ok=True)
-'''
-#! Senior fellow's code ends here
+
 
 def load_array(features, labels, batch_size, is_train = True):
     dataset = torch.utils.data.TensorDataset(features, labels)
@@ -72,27 +60,30 @@ def measurement(y_true, y_pred):
     }
     return result
 
-# 加载数据
-#! Senior fellow's code
-'''
-train_data = np.load(train_path)
-valid_data = np.load(valid_path)
-train_X = train_data["X"][:,:length_features]
-train_y = train_data["y"]
-valid_X = valid_data["X"][:,:length_features]
-valid_y = valid_data["y"]
-'''
-#! Senior fellow's code ends here
-#* My code
-dataset_name = "WTF_PAD"
-train_X, train_y, test_X, test_y, valid_X, valid_y = dataset(db_name=dataset_name, filter='butter-low')
-#* My code ends here
 
-if method_type == "df":
-    train_X[train_X>0] = 1
-    train_X[train_X<0] = -1
-    valid_X[valid_X>0] = 1
-    valid_X[valid_X<0] = -1
+# Loading the dataset
+assert args.spectrum in ['none', 'freq', 'ps']
+print("Loading the data ...")
+print("Dataset:", dataset_name)
+data_dir = "../npz/"
+data_X = 0
+if args.spectrum == 'none':
+    print("Spectrum: None")
+    data_X = np.load(data_dir + dataset_name + "_X_raw.npz")
+elif args.spectrum == 'freq':
+    print("Spectrum: Frequency spectrum")
+    data_X = np.load(data_dir + dataset_name + "_X_freq.npz")
+elif args.spectrum == 'ps':
+    print("Spectrum: Power spectrum with correlation")
+    data_X = np.load(data_dir + dataset_name + "_X_ps.npz")
+else:
+    print("TypeERROR: Wrong spectrum type !")
+data_y = np.load(data_dir + dataset_name + "_y.npz")
+train_X = data_X["train"]
+valid_X = data_X["valid"]
+train_y = data_y["train"]
+valid_y = data_y["valid"]
+
 
 print(f"train: X:{train_X.shape}, y:{train_y.shape}")
 print(f"valid: X:{valid_X.shape}, y:{valid_y.shape}")
@@ -111,6 +102,7 @@ train_valid_iter = load_array(train_X, F.one_hot(train_y, num_classes).type(torc
 valid_iter = load_array(valid_X, F.one_hot(valid_y, num_classes).type(torch.float32), batch_size, False)
 
 # 读取模型并训练
+print("Start training ....")
 model = DF(num_classes)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adamax(model.parameters(), lr=learning_rate, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)
@@ -163,9 +155,11 @@ for epoch in range(num_epoch):
         print("train_result:", train_result)
         print("valid_result:", valid_result)
 
-#! Senior fellow's code
-'''
-torch.save(model.state_dict(), os.path.join(networks_path, f'{dataset_name}_{method_type}.pth'))
-'''
-#! Senior fellow's code ends here
-torch.save(model.state_dict(), f=os.path.join("./", f'{dataset_name}_{method_type}.pth'))
+if args.spectrum == 'none':
+    torch.save(model.state_dict(), f=os.path.join("./models/", f'{dataset_name}_{method_type}_raw.pth'))
+elif args.spectrum == 'freq':
+    torch.save(model.state_dict(), f=os.path.join("./models/", f'{dataset_name}_{method_type}_freq.pth'))
+elif args.spectrum == 'ps':
+    torch.save(model.state_dict(), f=os.path.join("./models/", f'{dataset_name}_{method_type}_ps.pth'))
+else:
+    print("Wrong spectrum type !")
